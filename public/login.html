@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login</title>
+    <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+    <div class="container">
+        <h2>Login to Your Account</h2>
+        <form id="loginForm" novalidate>
+            <label for="usernameOrEmail">Username or Email</label>
+            <input type="text" id="usernameOrEmail" name="usernameOrEmail" required />
+            <span class="error" id="usernameOrEmailError"></span>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required />
+            <span class="error" id="passwordError"></span>
+
+            <button type="submit">Login</button>
+    </form>
+    <p class="redirect-text">Don't have an account? <a href="signup.html">Sign up</a></p>
+</div>
+<!-- Popup message container -->
+<div id="popup" class="popup-overlay">
+    <div class="popup-content">
+        <div id="popupMessage"></div>
+        <button id="popupOkButton" style="display:none; margin-top: 15px; padding: 8px 16px; font-size: 16px; cursor: pointer;">OK</button>
+    </div>
+</div>
+<script src="login.js"></script>
+</body>
+</html>
