@@ -1,0 +1,26 @@
+{
+  "name": "genshininfo.zomder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ERCaranza22/genshininfo.zomder.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ERCaranza22/genshininfo.zomder/issues"
+  },
+  "homepage": "https://github.com/ERCaranza22/genshininfo.zomder#readme",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.15.1",
+    "path": "^0.12.7"
+  }
+}
