@@ -381,6 +381,9 @@ function createCharacterCard(name, data) {
     const cardDiv = document.createElement('div');
     cardDiv.className = `card_${name.toLowerCase().replace(/\s+/g, '_')}`;
 
+    const favorites = getFavorites();
+    const isFavorite = favorites.includes(name);
+
     cardDiv.innerHTML = `
         <div class="character-card">
             <div class="image-container" onclick="toggleInfo(this)">
@@ -392,7 +395,7 @@ function createCharacterCard(name, data) {
                 <div class="stars">${data.stars}</div>
                 <p>Weapon: ${data.weapon}</p>
                 <button onclick="showPopup(event, '${data.fullImage}')">Full Image</button>
-                <button class="favorite-button active">❤️</button>
+                <button class="favorite-button${isFavorite ? ' active' : ''}">❤️</button>
             </div>
         </div>
     `;
@@ -433,10 +436,12 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Load favorite characters and render cards
-document.addEventListener('DOMContentLoaded', () => {
+// Function to render favorite characters in the favorites grid
+function renderFavorites() {
     const favoritesGrid = document.getElementById('favorites-grid');
     const favorites = getFavorites();
+
+    favoritesGrid.innerHTML = '';
 
     if (favorites.length === 0) {
         favoritesGrid.innerHTML = '<p>No favorite characters yet.</p>';
@@ -454,23 +459,45 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add event listeners for favorite buttons to allow removing from favorites
     const favoriteButtons = document.querySelectorAll('.favorite-button');
     favoriteButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const card = button.closest('.character-card');
-            const charName = card.querySelector('h2').textContent;
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const card = button.closest('.character-card');
+                const charName = card.querySelector('h2').textContent;
 
-            // Remove from favorites in localStorage
-            let favorites = getFavorites();
-            favorites = favorites.filter(name => name !== charName);
-            localStorage.setItem('favorites', JSON.stringify(favorites));
+                // Toggle active class on button
+                button.classList.toggle('active');
 
-            // Remove card from DOM
-            card.parentNode.removeChild(card);
+                let favorites = getFavorites();
+                const isFavorite = favorites.includes(charName);
 
-            // If no favorites left, show message
-            if (favorites.length === 0) {
-                favoritesGrid.innerHTML = '<p>No favorite characters yet.</p>';
-            }
-        });
+                if (isFavorite) {
+                    // Remove from favorites
+                    favorites = favorites.filter(name => name !== charName);
+                    // Remove card from DOM
+                    card.parentNode.removeChild(card);
+                } else {
+                    // Add to favorites
+                    favorites.push(charName);
+                }
+
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+
+                // If no favorites left, show message
+                if (favorites.length === 0) {
+                    favoritesGrid.innerHTML = '<p>No favorite characters yet.</p>';
+                }
+            });
     });
+}
+
+// Initial render on page load
+document.addEventListener('DOMContentLoaded', () => {
+    renderFavorites();
+});
+
+// Listen for changes to localStorage favorites and update the favorites grid dynamically
+window.addEventListener('storage', (event) => {
+    if (event.key === 'favorites') {
+        renderFavorites();
+    }
 });

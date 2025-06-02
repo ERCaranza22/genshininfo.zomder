@@ -3,7 +3,22 @@ document.addEventListener('DOMContentLoaded', () => {
     favoriteButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.stopPropagation();
+            const card = button.closest('.character-card');
+            const charName = card.querySelector('h2').textContent;
+
             button.classList.toggle('active');
+
+            let favorites = getFavorites();
+            const isFavorite = favorites.includes(charName);
+
+            if (isFavorite) {
+                favorites = favorites.filter(name => name !== charName);
+                showFavoriteMessage('removed from favorites');
+            } else {
+                favorites.push(charName);
+                showFavoriteMessage('added to favorites');
+            }
+            saveFavorites(favorites);
         });
     });
 });
@@ -38,14 +53,29 @@ document.addEventListener('DOMContentLoaded', () => {
             button.classList.toggle('active');
 
             let favorites = getFavorites();
+            const favoriteMessage = document.getElementById('favorite-message');
             if (favorites.includes(charName)) {
                 // Remove from favorites
                 favorites = favorites.filter(name => name !== charName);
+                favoriteMessage.textContent = 'removed from favorites';
             } else {
                 // Add to favorites
                 favorites.push(charName);
+                favoriteMessage.textContent = 'added to favorites';
             }
             saveFavorites(favorites);
+
+            // Show popup message
+            favoriteMessage.style.display = 'block';
+            favoriteMessage.style.opacity = '1';
+
+            // Hide popup after 2 seconds
+            setTimeout(() => {
+                favoriteMessage.style.opacity = '0';
+                setTimeout(() => {
+                    favoriteMessage.style.display = 'none';
+                }, 500);
+            }, 2000);
         });
     });
 });
