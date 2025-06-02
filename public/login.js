@@ -48,30 +48,28 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     }
 
     if (valid) {
-        fetch('http://localhost:3000/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ usernameOrEmail, password })
-        })
-        .then(response => {
-            if (response.ok) {
-                popupOkButton.textContent = 'Proceed';
-                showPopup('Login successful!', true);
-                this.reset();
-            } else if (response.status === 401) {
-                popupOkButton.textContent = 'OK';
-                showPopup('Invalid username/email or password.');
-            } else {
-                popupOkButton.textContent = 'OK';
-                showPopup('Login failed. Please try again.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
+        // Get users from localStorage
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+
+        // Find user by username or email
+        const user = users.find(user => user.username === usernameOrEmail || user.email === usernameOrEmail);
+
+        if (!user) {
             popupOkButton.textContent = 'OK';
-            showPopup('Login failed. Please try again.');
-        });
+            showPopup('User not found.');
+            return;
+        }
+
+        if (user.password !== password) {
+            popupOkButton.textContent = 'OK';
+            showPopup('Invalid password.');
+            return;
+        }
+
+        popupOkButton.textContent = 'Proceed';
+        showPopup('Login successful!', true);
+        // Save current logged-in user to localStorage
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        this.reset();
     }
 });

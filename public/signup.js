@@ -59,26 +59,23 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
     }
 
     if (valid) {
-        fetch('http://localhost:3000/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, email, password })
-        })
-        .then(response => {
-            if (response.ok) {
-                showPopup('Sign Up Successfully\nProceed to Log In', true);
-                this.reset();
-            } else if (response.status === 409) {
-                showPopup('User already exists');
-            } else {
-                showPopup('Signup failed. Please try again.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showPopup('Signup failed. Please try again.');
-        });
+        // Get existing users from localStorage or initialize empty array
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+
+        // Check if username or email already exists
+        const userExists = users.some(user => user.username === username || user.email === email);
+        if (userExists) {
+            showPopup('User with this username or email already exists.');
+            return;
+        }
+
+        // Add new user to users array
+        users.push({ username, email, password });
+
+        // Save updated users array to localStorage
+        localStorage.setItem('users', JSON.stringify(users));
+
+        showPopup('Sign Up Successful! Proceed to Log In', true);
+        this.reset();
     }
 });

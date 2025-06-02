@@ -1,44 +1,52 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const favoriteButtons = document.querySelectorAll('.favorite-button');
-    favoriteButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const card = button.closest('.character-card');
-            const charName = card.querySelector('h2').textContent;
 
-            button.classList.toggle('active');
-
-            let favorites = getFavorites();
-            const isFavorite = favorites.includes(charName);
-
-            if (isFavorite) {
-                favorites = favorites.filter(name => name !== charName);
-                showFavoriteMessage('removed from favorites');
-            } else {
-                favorites.push(charName);
-                showFavoriteMessage('added to favorites');
-            }
-            saveFavorites(favorites);
-        });
-    });
-});
-
-// Utility to get favorites from localStorage
+/**
+ * Utility to get favorites from localStorage
+ * @returns {Array} Array of favorite character names
+ */
 function getFavorites() {
     const favs = localStorage.getItem('favorites');
     return favs ? JSON.parse(favs) : [];
 }
 
-// Utility to save favorites to localStorage
+/**
+ * Utility to save favorites to localStorage
+ * @param {Array} favorites - Array of favorite character names
+ */
 function saveFavorites(favorites) {
     localStorage.setItem('favorites', JSON.stringify(favorites));
 }
 
-// Favorite button toggle with persistence
-document.addEventListener('DOMContentLoaded', () => {
+let favoriteMessageTimeout = null;
+
+/**
+ * Show favorite message popup with character name and action
+ * @param {string} characterName - Name of the character
+ * @param {string} action - Action message (e.g. 'added to favorites')
+ */
+function showFavoriteMessage(characterName, action) {
+    const favoriteMessage = document.getElementById('favorite-message');
+    favoriteMessage.textContent = `${characterName} ${action}`;
+    favoriteMessage.style.display = 'block';
+    favoriteMessage.style.opacity = '1';
+
+    if (favoriteMessageTimeout) {
+        clearTimeout(favoriteMessageTimeout);
+    }
+
+    favoriteMessageTimeout = setTimeout(() => {
+        favoriteMessage.style.opacity = '0';
+        setTimeout(() => {
+            favoriteMessage.style.display = 'none';
+        }, 500);
+    }, 2000);
+}
+
+/**
+ * Initialize favorite buttons and add event listeners
+ */
+function initFavoriteButtons() {
     const favoriteButtons = document.querySelectorAll('.favorite-button');
     favoriteButtons.forEach(button => {
-        // Get character name from the card
         const card = button.closest('.character-card');
         const charName = card.querySelector('h2').textContent;
 
@@ -53,31 +61,56 @@ document.addEventListener('DOMContentLoaded', () => {
             button.classList.toggle('active');
 
             let favorites = getFavorites();
-            const favoriteMessage = document.getElementById('favorite-message');
             if (favorites.includes(charName)) {
-                // Remove from favorites
                 favorites = favorites.filter(name => name !== charName);
-                favoriteMessage.textContent = 'removed from favorites';
+            showFavoriteMessage(charName, 'removed from favorites');
             } else {
-                // Add to favorites
                 favorites.push(charName);
-                favoriteMessage.textContent = 'added to favorites';
+                showFavoriteMessage(charName, 'added to favorites');
             }
             saveFavorites(favorites);
-
-            // Show popup message
-            favoriteMessage.style.display = 'block';
-            favoriteMessage.style.opacity = '1';
-
-            // Hide popup after 2 seconds
-            setTimeout(() => {
-                favoriteMessage.style.opacity = '0';
-                setTimeout(() => {
-                    favoriteMessage.style.display = 'none';
-                }, 500);
-            }, 2000);
         });
     });
+}
+
+function updateLoginStatus() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const loginLink = document.querySelector('.nav-links a[href="login.html"]');
+    if (!loginLink) return;
+
+    if (currentUser) {
+        loginLink.textContent = 'Profile';
+        loginLink.href = 'profile.html'; // Assuming profile.html exists or change as needed
+    } else {
+        loginLink.textContent = 'Login';
+        loginLink.href = 'login.html';
+    }
+}
+
+// Initialize favorite buttons and update login status on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+    initFavoriteButtons();
+    updateLoginStatus();
+});
+
+/**
+ * Listen for changes to localStorage favorites and update favorite buttons accordingly
+ * This keeps favorite button states in sync across multiple tabs/windows
+ */
+window.addEventListener('storage', (event) => {
+    if (event.key === 'favorites') {
+        const favorites = getFavorites();
+        const favoriteButtons = document.querySelectorAll('.favorite-button');
+        favoriteButtons.forEach(button => {
+            const card = button.closest('.character-card');
+            const charName = card.querySelector('h2').textContent;
+            if (favorites.includes(charName)) {
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active');
+            }
+        });
+    }
 });
 
 // Toggle character info on image click
