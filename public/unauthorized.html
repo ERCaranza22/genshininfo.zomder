@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unauthorized Access - Genshin Impact</title>
+    <link rel="stylesheet" href="style.css" type="text/css"/>
+    <style>
+        .unauthorized-container {
+            text-align: center;
+            padding: 50px 20px;
+            max-width: 600px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .unauthorized-container h1 {
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+
+        .unauthorized-container p {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+
+        .unauthorized-container .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .unauthorized-container .action-button {
+            padding: 10px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+
+        .login-button {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .login-button:hover {
+            background-color: #2980b9;
+        }
+
+        .home-button {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .home-button:hover {
+            background-color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <img class="site-title" src="assets/GenshinImpact/GenshinImpact_Logo.png" height="80" width="250"></img>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/">Characters</a></li>
+            <li><a href="/favourites">Favorites</a></li>
+            <li><a href="/following">Following</a></li>
+            <li><a href="/login" id="login-link">
+                <img src="assets/icons/user-icon.png" alt="Login" class="nav-icon">
+            </a></li>
+        </ul>
+    </nav>
+
+    <div class="unauthorized-container">
+        <h1>⚠️ Unauthorized Access</h1>
+        <p>Please log in to access this page.</p>
+        <div class="action-buttons">
+            <a href="/login" class="action-button login-button">Log In</a>
+            <a href="/" class="action-button home-button">Go to Home</a>
+        </div>
+    </div>
+
+    <script>
+        // Check if redirected from unauthorized access
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const returnUrl = urlParams.get('returnUrl');
+            if (returnUrl) {
+                const loginButton = document.querySelector('.login-button');
+                loginButton.href = `/login?returnUrl=${encodeURIComponent(returnUrl)}`;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -35,7 +35,7 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
 
     popupOkButton.onclick = function() {
         popup.classList.remove('show');
-        window.location.href = 'login.html';
+        window.location.href = '/login';
     };
 
     if (username.length < 3) {
@@ -56,26 +56,41 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
     if (confirmPassword !== password) {
         document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
         valid = false;
-    }
-
-    if (valid) {
-        // Get existing users from localStorage or initialize empty array
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-
-        // Check if username or email already exists
-        const userExists = users.some(user => user.username === username || user.email === email);
-        if (userExists) {
-            showPopup('User with this username or email already exists.');
-            return;
-        }
-
-        // Add new user to users array
-        users.push({ username, email, password });
-
-        // Save updated users array to localStorage
-        localStorage.setItem('users', JSON.stringify(users));
-
-        showPopup('Sign Up Successful! Proceed to Log In', true);
-        this.reset();
+    }    if (valid) {
+        // Send signup request to the API
+        fetch('/api/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, email, password })
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    throw new Error(data.message || 'Signup failed');
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.message === 'User created successfully') {
+                // Set up session data
+                localStorage.setItem('currentUser', JSON.stringify({ 
+                    username: username, 
+                    email: email 
+                }));
+                
+                // Show success popup
+                showPopup('Sign Up Successful! Proceed to Log In', true);
+                this.reset();
+            } else {
+                throw new Error(data.message || 'Signup failed');
+            }
+        })
+        .catch(error => {
+            console.error('Signup error:', error);
+            showPopup(error.message || 'An error occurred during signup. Please try again.');
+        });
     }
 });

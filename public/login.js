@@ -27,13 +27,17 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
                 popup.classList.remove('show');
             }, 3000);
         }
-    }
-
-    popupOkButton.onclick = function() {
-        if (popupOkButton.textContent === 'Proceed') {
-            window.location.href = 'index.html';
-        } else {
-            popup.classList.remove('show');
+    }    popupOkButton.onclick = function() {
+        popup.classList.remove('show');
+        if (popupOkButton.dataset.action === 'redirect') {
+            // Get return URL from query parameters
+            const params = new URLSearchParams(window.location.search);
+            const returnUrl = params.get('returnUrl');
+            if (returnUrl && !returnUrl.includes('/signup')) {
+                window.location.href = decodeURIComponent(returnUrl);
+            } else {
+                window.location.href = '/';
+            }
         }
     };
 
@@ -48,28 +52,53 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     }
 
     if (valid) {
-        // Get users from localStorage
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-
-        // Find user by username or email
-        const user = users.find(user => user.username === usernameOrEmail || user.email === usernameOrEmail);
-
-        if (!user) {
+        // Send login request to the API
+        fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ usernameOrEmail, password })
+        })
+        .then(response => {
+            if (!response.ok) {
+                // Handle 401 (unauthorized) errors separately
+                if (response.status === 401) {
+                    return response.json().then(data => {
+                        throw new Error(data.message || 'Invalid credentials');
+                    });
+                }
+                throw new Error('Login failed');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.message === 'Login successful') {
+                // Save current logged-in user to localStorage
+                localStorage.setItem('currentUser', JSON.stringify(data.user));
+                
+                // Show success popup
+                popupOkButton.textContent = 'Continue';
+                popupOkButton.dataset.action = 'redirect';
+                showPopup('Login successful!', true);
+                
+                // Reset form
+                this.reset();
+            } else {
+                throw new Error(data.message || 'Login failed');
+            }
+        })
+        .catch(error => {
+            console.error('Login error:', error);
             popupOkButton.textContent = 'OK';
-            showPopup('User not found.');
-            return;
-        }
-
-        if (user.password !== password) {
-            popupOkButton.textContent = 'OK';
-            showPopup('Invalid password.');
-            return;
-        }
-
-        popupOkButton.textContent = 'Proceed';
-        showPopup('Login successful!', true);
-        // Save current logged-in user to localStorage
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        this.reset();
+            popupOkButton.dataset.action = '';
+            
+            // Show specific error message for 401 errors
+            if (error.message === 'Invalid credentials') {
+                showPopup('Invalid username/email or password');
+            } else {
+                showPopup(error.message || 'An error occurred during login. Please try again.');
+            }
+        });
     }
 });

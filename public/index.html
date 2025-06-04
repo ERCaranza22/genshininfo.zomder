@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Genshin Impact Character Info Sheet</title>
     <link rel="stylesheet" href="style.css" type="text/css"/>
+
 </head>
 <body>
 
@@ -13,10 +14,9 @@
     <div class="nav-left">
         <img class="site-title" src="assets/GenshinImpact/GenshinImpact_Logo.png" height="80" width="250"></img>
     </div>
-<ul class="nav-links">
-    <li><a href="index.html">Characters</a></li>
-    <li><a href="favorites.html">Favorites</a></li>
-    <li><a href="login.html">
+<ul class="nav-links">    <li><a href="/">Characters</a></li>
+    <li><a href="/favourites">Favorites</a></li>
+    <li><a href="/login" id="login-link">
     <img src="assets/icons/user-icon.png" alt="Login" class="nav-icon">
     </a></li>
 </ul>
@@ -30,704 +30,530 @@
 <!-- Characters Grid Section -->
 <section class="characters-grid" id = "characters-grid">
 
-<!-- Character Card: Albedo -->
-<div class="card_albedo">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Albedo_Icon.png" alt="Albedo">
-            <img class="element-icon" src="assets/elements/geo-element.png" alt="Geo">
-        </div>
-        <div class="character-info hidden">
-            <h2>Albedo</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Sword</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Albedo.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
-        </div>
-    </div>
-</div>
-
-<!-- Character Card: Amber -->
-<div class="card_amber">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Amber_Icon.png" alt="Amber">
-            <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Amber</h2>
-            <div class="four-stars">⭐⭐⭐⭐</div>
-            <p>Weapon: Bow</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Amber.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Albedo -->
+    <div class="card_albedo">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Albedo_Icon.png" alt="Albedo">
+                <img class="element-icon" src="assets/elements/geo-element.png" alt="Geo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Albedo</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Sword</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Albedo.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Arlecchino -->
-<div class="card_arlecchino">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Arlecchino_Icon.png" alt="Arlecchino">
-            <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Arlecchino</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Polearm</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Arlecchino.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Amber -->
+    <div class="card_amber">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Amber_Icon.png" alt="Amber">
+                <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Amber</h2>
+                <div class="five-stars">⭐⭐⭐⭐</div>
+                <p>Weapon: Bow</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Amber.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Bennett -->
-<div class="card_bennett">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Bennett_Icon.png" alt="Bennett">
-            <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Bennett</h2>
-            <div class="four-stars">⭐⭐⭐⭐</div>
-            <p>Weapon: Sword</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Bennett.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Arlecchino -->
+    <div class="card_arlecchino">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Arlecchino_Icon.png" alt="Arlecchino">
+                <img class="element-icon" src="assets/elements/pyro-element.png" alt="Hydro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Arlecchino</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Polearm</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Arlecchino.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Diluc -->
-<div class="card_diluc">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Diluc_Icon.png" alt="Diluc">
-            <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Diluc</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Claymore</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Diluc.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Bennett -->
+    <div class="card_bennett">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Bennett_Icon.png" alt="Bennett">
+                <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Bennett</h2>
+                <div class="five-stars">⭐⭐⭐⭐</div>
+                <p>Weapon: Sword</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Bennett.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Diona -->
-<div class="card_diona">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Diona_Icon.png" alt="Diona">
-            <img class="element-icon" src="assets/elements/cryo-element.png" alt="Cryo">
-        </div>
-        <div class="character-info hidden">
-            <h2>Diona</h2>
-            <div class="four-stars">⭐⭐⭐⭐</div>
-            <p>Weapon: Bow</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Diona.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Diluc -->
+    <div class="card_diluc">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Diluc_Icon.png" alt="Diluc">
+                <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Diluc</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Claymore</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Diluc.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Eula -->
-<div class="card_eula">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Eula_Icon.png" alt="Eula">
-            <img class="element-icon" src="assets/elements/cryo-element.png" alt="Cryo">
-        </div>
-        <div class="character-info hidden">
-            <h2>Eula</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Claymore</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Eula.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Diona -->
+    <div class="card_diona">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Diona_Icon.png" alt="Diona">
+                <img class="element-icon" src="assets/elements/cryo-element.png" alt="Cryo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Diona</h2>
+                <div class="five-stars">⭐⭐⭐⭐</div>
+                <p>Weapon: Bow</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Diona.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Fischl -->
-<div class="card_fischl">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Fischl_Icon.png" alt="Fischl">
-            <img class="element-icon" src="assets/elements/electro-element.png" alt="Electro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Fischl</h2>
-            <div class="four-stars">⭐⭐⭐⭐</div>
-            <p>Weapon: Bow</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Fischl.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Eula -->
+    <div class="card_eula">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Eula_Icon.png" alt="Eula">
+                <img class="element-icon" src="assets/elements/cryo-element.png" alt="Cryo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Eula</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Claymore</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Eula.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Ganyu -->
-<div class="card_ganyu">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Ganyu_Icon.png" alt="Ganyu">
-            <img class="element-icon" src="assets/elements/cryo-element.png" alt="Cryo">
+    <!-- Character Card: Fischl -->
+    <div class="card_fischl">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Fischl_Icon.png" alt="Fischl">
+                <img class="element-icon" src="assets/elements/electro-element.png" alt="Electro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Fischl</h2>
+                <div class="five-stars">⭐⭐⭐⭐</div>
+                <p>Weapon: Bow</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Fischl.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
-        <div class="character-info hidden">
-        <h2>Ganyu</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
+    </div>
+
+    <!-- Character Card: Ganyu -->
+    <div class="card_ganyu">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Ganyu_Icon.png" alt="Ganyu">
+                <img class="element-icon" src="assets/elements/cryo-element.png" alt="Cryo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Ganyu</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
                 <p>Weapon: Bow</p>
                 <button onclick="showPopup(event, 'assets/characters/wish/Ganyu.png')">Full Image</button>
                 <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Gorou -->
-<div class="card_gorou">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Gorou_Icon.png" alt="Gorou">
-            <img class="element-icon" src="assets/elements/geo-element.png" alt="Geo">
-        </div>
-        <div class="character-info hidden">
-            <h2>Gorou</h2>
-            <div class="four-stars">⭐⭐⭐⭐</div>
-            <p>Weapon: Bow</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Gorou.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: HuTao -->
+    <div class="card_hutao">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/HuTao_Icon.png" alt="HuTao">
+                <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
+            </div>
+            <div class="character-info hidden">
+                <h2>HuTao</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Polearm</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/HuTao.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Hu Tao -->
-<div class="card_hutao">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/HuTao_Icon.png" alt="Hu Tao">
-            <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Hu Tao</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Polearm</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/HuTao.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: KaedeharaKazuha -->
+    <div class="card_kaedehara-kazuha">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/KaedeharaKazuha_Icon.png" alt="Kaedehara Kazuha">
+                <img class="element-icon" src="assets/elements/anemo-element.png" alt="Anemo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Kaedehara Kazuha</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Sword</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/KaedeharaKazuha.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Kaedehara Kazuha -->
-<div class="card_kaedehara_kazuha">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/KaedeharaKazuha_Icon.png" alt="Kaedehara Kazuha">
-            <img class="element-icon" src="assets/elements/anemo-element.png" alt="Anemo">
-        </div>
-        <div class="character-info hidden">
-            <h2>Kaedehara Kazuha</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Sword</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/KaedeharaKazuha.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: KamisatoAyaka -->
+    <div class="card_kamisato-ayaka">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/KamisatoAyaka_Icon.png" alt="Kamisato Ayaka">
+                <img class="element-icon" src="assets/elements/cryo-element.png" alt="Cryo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Kamisato Ayaka</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Sword</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/KamisatoAyaka.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Kamisato Ayaka -->
-<div class="card_kamisato_ayaka">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/KamisatoAyaka_Icon.png" alt="Kamisato Ayaka">
-            <img class="element-icon" src="assets/elements/cryo-element.png" alt="Cryo">
-        </div>
-        <div class="character-info hidden">
-            <h2>Kamisato Ayaka</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Sword</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/KamisatoAyaka.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: KamisatoAyato -->
+    <div class="card_kamisato-ayato">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/KamisatoAyato_Icon.png" alt="Kamisato Ayato">
+                <img class="element-icon" src="assets/elements/hydro-element.png" alt="Hydro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Kamisato Ayato</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Sword</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/KamisatoAyato.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Kamisato Ayato -->
-<div class="card_kamisato_ayato">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/KamisatoAyato_Icon.png" alt="Kamisato Ayato">
-            <img class="element-icon" src="assets/elements/hydro-element.png" alt="Hydro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Kamisato Ayato</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Sword</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/KamisatoAyato.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Keqing -->
+    <div class="card_keqing">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Keqing_Icon.png" alt="Keqing">
+                <img class="element-icon" src="assets/elements/electro-element.png" alt="Electro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Keqing</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Sword</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Keqing.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Keqing -->
-<div class="card_keqing">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Keqing_Icon.png" alt="Keqing">
-            <img class="element-icon" src="assets/elements/electro-element.png" alt="Electro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Keqing</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Sword</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Keqing.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Klee -->
+    <div class="card_klee">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Klee_Icon.png" alt="Klee">
+                <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Klee</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Catalyst</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Klee.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Klee -->
-<div class="card_klee">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Klee_Icon.png" alt="Klee">
-            <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Klee</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Catalyst</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Klee.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: KukiShinobu -->
+    <div class="card_kuki-shinobu">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/KukiShinobu_Icon.png" alt="Kuki Shinobu">
+                <img class="element-icon" src="assets/elements/electro-element.png" alt="Electro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Kuki Shinobu</h2>
+                <div class="five-stars">⭐⭐⭐⭐</div>
+                <p>Weapon: Sword</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/KukiShinobu.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Kuki Shinobu -->
-<div class="card_kuki_shinobu">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/KukiShinobu_Icon.png" alt="Kuki Shinobu">
-            <img class="element-icon" src="assets/elements/electro-element.png" alt="Electro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Kuki Shinobu</h2>
-            <div class="four-stars">⭐⭐⭐⭐</div>
-            <p>Weapon: Sword</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/KukiShinobu.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Mona -->
+    <div class="card_mona">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Mona_Icon.png" alt="Mona">
+                <img class="element-icon" src="assets/elements/hydro-element.png" alt="Hydro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Mona</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Catalyst/p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Mona.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Mavuika -->
-<div class="card_mavuika">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Mavuika_Icon.png" alt="Mavuika">
-            <img class="element-icon" src="assets/elements/dendro-element.png" alt="Dendro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Mavuika</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Claymore</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Mavuika.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Ningguang -->
+    <div class="card_ningguang">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Ningguang_Icon.png" alt="Ningguang">
+                <img class="element-icon" src="assets/elements/geo-element.png" alt="Geo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Ningguang</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Catalyst</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Ningguang.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Mika -->
-<div class="card_mika">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Mika_Icon.png" alt="Mika">
-            <img class="element-icon" src="assets/elements/cryo-element.png" alt="Cryo">
-        </div>
-        <div class="character-info hidden">
-            <h2>Mika</h2>
-            <div class="four-stars">⭐⭐⭐⭐</div>
-            <p>Weapon: Polearm</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Mika.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Noelle -->
+    <div class="card_noelle">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Noelle_Icon.png" alt="Noelle">
+                <img class="element-icon" src="assets/elements/geo-element.png" alt="Geo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Noelle</h2>
+                <div class="five-stars">⭐⭐⭐⭐</div>
+                <p>Weapon: Claymore</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Noelle.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Mona -->
-<div class="card_mona">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Mona_Icon.png" alt="Mona">
-            <img class="element-icon" src="assets/elements/hydro-element.png" alt="Hydro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Mona</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Catalyst</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Mona.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: RaidenShogun -->
+    <div class="card_raidenshogun">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/RaidenShogun_Icon.png" alt="Raiden Shogun">
+                <img class="element-icon" src="assets/elements/electro-element.png" alt="Electro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Raiden Shogun</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Nilou -->
-<div class="card_nilou">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Nilou_Icon.png" alt="Nilou">
-            <img class="element-icon" src="assets/elements/hydro-element.png" alt="Hydro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Nilou</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Sword</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Nilou.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: ShikanoinHeizou -->
+    <div class="card_shikanoinheizou">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/ShikanoinHeizou_Icon.png" alt="Shikanoin Heizou">
+                <img class="element-icon" src="assets/elements/anemo-element.png" alt="Anemo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Shikanoin Heizou</h2>
+                <div class="four-stars">⭐⭐⭐⭐</div>
+                <p>Weapon: Catalyst</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/ShikanoinHeizou.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Ningguang -->
-<div class="card_ningguang">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Ningguang_Icon.png" alt="Ningguang">
-            <img class="element-icon" src="assets/elements/geo-element.png" alt="Geo">
-        </div>
-        <div class="character-info hidden">
-            <h2>Ningguang</h2>
-            <div class="four-stars">⭐⭐⭐⭐</div>
-            <p>Weapon: Catalyst</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Ningguang.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Sucrose -->
+    <div class="card_sucrose">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Sucrose_Icon.png" alt="Sucrose">
+                <img class="element-icon" src="assets/elements/anemo-element.png" alt="Anemo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Sucrose</h2>
+                <div class="four-stars">⭐⭐⭐⭐</div>
+                <p>Weapon: Catalyst</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Sucrose.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Noelle -->
-<div class="card_noelle">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Noelle_Icon.png" alt="Noelle">
-            <img class="element-icon" src="assets/elements/geo-element.png" alt="Geo">
-        </div>
-        <div class="character-info hidden">
-            <h2>Noelle</h2>
-            <div class="four-stars">⭐⭐⭐⭐</div>
-            <p>Weapon: Claymore</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Noelle.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Tartaglia -->
+    <div class="card_tartaglia">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Tartaglia_Icon.png" alt="Tartaglia">
+                <img class="element-icon" src="assets/elements/hydro-element.png" alt="Hydro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Tartaglia</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Bow</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Tartaglia.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Raiden Shogun -->
-<div class="card_raiden_shogun">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/RaidenShogun_Icon.png" alt="Raiden Shogun">
-            <img class="element-icon" src="assets/elements/electro-element.png" alt="Electro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Raiden Shogun</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Polearm</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/RaidenShogun.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Venti -->
+    <div class="card_venti">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Venti_Icon.png" alt="Venti">
+                <img class="element-icon" src="assets/elements/anemo-element.png" alt="Anemo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Venti</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Bow</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Venti.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Sangonomiya Kokomi -->
-<div class="card_sangonomiya_kokomi">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/SangonomiyaKokomi_Icon.png" alt="SangonomiyaKokomi">
-            <img class="element-icon" src="assets/elements/hydro-element.png" alt="Hydro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Sangonomiya Kokomi</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Catalyst</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/SangonomiyaKokomi.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Wanderer -->
+    <div class="card_wanderer">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Wanderer_Icon.png" alt="Wanderer">
+                <img class="element-icon" src="assets/elements/anemo-element.png" alt="Anemo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Wanderer</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Catalyst</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Wanderer.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Shikanoin Heizou -->
-<div class="card_shikanoin_heizou">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/ShikanoinHeizou_Icon.png" alt="ShikanoinHeizou">
-            <img class="element-icon" src="assets/elements/anemo-element.png" alt="Anemo">
-        </div>
-        <div class="character-info hidden">
-            <h2>Shikanoin Heizou</h2>
-            <div class="four-stars">⭐⭐⭐⭐</div>
-            <p>Weapon: Sword</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/ShikanoinHeizou.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Xiao -->
+    <div class="card_xiao">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Xiao_Icon.png" alt="Xiao">
+                <img class="element-icon" src="assets/elements/anemo-element.png" alt="Anemo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Xiao</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Polearm</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Xiao.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Sucrose -->
-<div class="card_sucrose">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Sucrose_Icon.png" alt="Sucrose">
-            <img class="element-icon" src="assets/elements/anemo-element.png" alt="Anemo">
-        </div>
-        <div class="character-info hidden">
-            <h2>Sucrose</h2>
-            <div class="four-stars">⭐⭐⭐⭐</div>
-            <p>Weapon: Catalyst</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Sucrose.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
-        </div>
-    </div>
-</div>
-
-<!-- Character Card: Tartaglia -->
-<div class="card_tartaglia">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Tartaglia_Icon.png" alt="Tartaglia">
-            <img class="element-icon" src="assets/elements/hydro-element.png" alt="Hydro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Tartaglia</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Bow</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Tartaglia.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
-        </div>
-    </div>
-</div>
-
-<!-- Character Card: Thoma -->
-<div class="card_thoma">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Thoma_Icon.png" alt="Thoma">
-            <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Thoma</h2>
-            <div class="four-stars">⭐⭐⭐⭐</div>
-            <p>Weapon: Polearm</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Thoma.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
-        </div>
-    </div>
-</div>
-
-<!-- Character Card: Tighnari -->
-<div class="card_tighnari">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Tighnari_Icon.png" alt="Tighnari">
-            <img class="element-icon" src="assets/elements/dendro-element.png" alt="Dendro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Tighnari</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Bow</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Tighnari.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
-        </div>
-    </div>
-</div>
-
-<!-- Character Card: Venti -->
-<div class="card_venti">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Venti_Icon.png" alt="Venti">
-            <img class="element-icon" src="assets/elements/anemo-element.png" alt="Anemo">
-        </div>
-        <div class="character-info hidden">
-            <h2>Venti</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Bow</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Venti.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
-        </div>
-    </div>
-</div>
-
-<!-- Character Card: Wanderer -->
-<div class="card_wanderer">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Wanderer_Icon.png" alt="Wanderer">
-            <img class="element-icon" src="assets/elements/anemo-element.png" alt="Anemo">
-        </div>
-        <div class="character-info hidden">
-            <h2>Wanderer</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Catalyst</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Wanderer.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
-        </div>
-    </div>
-</div>
-
-<!-- Character Card: Xiangling -->
-<div class="card_xiangling">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Xiangling_Icon.png" alt="Xiangling">
-            <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Xiangling</h2>
-            <div class="four-stars">⭐⭐⭐⭐</div>
-            <p>Weapon: Polearm</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Xiangling.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
-        </div>
-    </div>
-</div>
-
-<!-- Character Card: Xiao -->
-<div class="card_xiao">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Xiao_Icon.png" alt="Xiao">
-            <img class="element-icon" src="assets/elements/anemo-element.png" alt="Anemo">
-        </div>
-        <div class="character-info hidden">
-            <h2>Xiao</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Polearm</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Xiao.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
-        </div>
-    </div>
-</div>
-
-<!-- Character Card: Xingqiu -->
-<div class="card_xingqiu">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Xingqiu_Icon.png" alt="Xingqiu">
-            <img class="element-icon" src="assets/elements/hydro-element.png" alt="Hydro">
-        </div>
-        <div class="character-info hidden">
-        <h2>Xingqiu</h2>
-            <div class="four-stars">⭐⭐⭐⭐</div>
+    <!-- Character Card: Xingqiu -->
+    <div class="card_xingqiu">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Xingqiu_Icon.png" alt="Xingqiu">
+                <img class="element-icon" src="assets/elements/hydro-element.png" alt="Hydro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Xingqiu</h2>
+                <div class="four-stars">⭐⭐⭐⭐</div>
                 <p>Weapon: Sword</p>
                 <button onclick="showPopup(event, 'assets/characters/wish/Xingqiu.png')">Full Image</button>
                 <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Yae Miko -->
-<div class="card_yaemiko">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/YaeMiko_Icon.png" alt="Yae Miko">
-            <img class="element-icon" src="assets/elements/electro-element.png" alt="Electro">
-        </div>
-        <div class="character-info hidden">
-        <h2>Yae Miko</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
+    <!-- Character Card: YaeMiko -->
+    <div class="card_yae-miko">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/YaeMiko_Icon.png" alt="Yae Miko">
+                <img class="element-icon" src="assets/elements/electro-element.png" alt="Electro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Yae Miko</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
                 <p>Weapon: Catalyst</p>
                 <button onclick="showPopup(event, 'assets/characters/wish/YaeMiko.png')">Full Image</button>
                 <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Yanfei -->
-<div class="card_yanfei">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Yanfei_Icon.png" alt="Yanfei">
-            <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Yanfei</h2>
-            <div class="four-stars">⭐⭐⭐⭐</div>
-            <p>Weapon: Catalyst</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Yanfei.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Yanfei -->
+    <div class="card_yanfei">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Yanfei_Icon.png" alt="Yanfei">
+                <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Yanfei</h2>
+                <div class="four-stars">⭐⭐⭐⭐</div>
+                <p>Weapon: Catalyst</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Yanfei.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Yelan -->
-<div class="card_yelan">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Yelan_Icon.png" alt="Yelan">
-            <img class="element-icon" src="assets/elements/hydro-element.png" alt="Hydro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Yelan</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Bow</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Yelan.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Yelan -->
+    <div class="card_yelan">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Yelan_Icon.png" alt="Yelan">
+                <img class="element-icon" src="assets/elements/hydro-element.png" alt="Hydro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Yelan</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Bow</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Yelan.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Character Card: Yoimiya -->
-<div class="card_yoimiya">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Yoimiya_Icon.png" alt="Yoimiya">
-            <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
-        </div>
-        <div class="character-info hidden">
-            <h2>Yoimiya</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Bow</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Yoimiya.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
+    <!-- Character Card: Zhongli -->
+    <div class="card_zhongli">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Zhongli_Icon.png" alt="Zhongli">
+                <img class="element-icon" src="assets/elements/geo-element.png" alt="Geo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Zhongli</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Polearm</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Zhongli.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
         </div>
     </div>
-</div>
-
-<!-- Character Card: Yun Jin -->
-<div class="card_yun_jin">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/YunJin_Icon.png" alt="Yun Jin">
-            <img class="element-icon" src="assets/elements/geo-element.png" alt="Geo">
-        </div>
-        <div class="character-info hidden">
-            <h2>Yun Jin</h2>
-            <div class="four-stars">⭐⭐⭐⭐</div>
-            <p>Weapon: Polearm</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/YunJin.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
-        </div>
-    </div>
-</div>
-
-<!-- Character Card: Zhongli -->
-<div class="card_zhongli">
-    <div class="character-card">
-        <div class="image-container" onclick="toggleInfo(this)">
-            <img class="character-img" src="assets/characters/icon/Zhongli_Icon.png" alt="Zhongli">
-            <img class="element-icon" src="assets/elements/geo-element.png" alt="Geo">
-        </div>
-        <div class="character-info hidden">
-            <h2>Zhongli</h2>
-            <div class="five-stars">⭐⭐⭐⭐⭐</div>
-            <p>Weapon: Polearm</p>
-            <button onclick="showPopup(event, 'assets/characters/wish/Zhongli.png')">Full Image</button>
-            <button class="favorite-button">❤️</button>
-        </div>
-    </div>
-</div>
-
-
+                
 </section>
 
 <!-- Popup Modal -->
@@ -738,15 +564,12 @@
     </div>
 </div>
 
-<!-- Add more characters below similarly -->
-    
-</section>
-
-<!-- Popup Modal -->
-<div class="popup" id="popup">
+<!-- Logout Confirmation Popup -->
+<div id="logout-popup">
     <div class="popup-content">
-    <span class="close-btn" onclick="hidePopup()">&times;</span>
-    <img id="popup-img" src="" alt="Full Character">
+        <p>Want to log out?</p>
+        <button id="logout-yes">Yes</button>
+        <button id="logout-no">No</button>
     </div>
 </div>
 

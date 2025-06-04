@@ -1,76 +1,90 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const User = require('./model/user');
+const path = require('path');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+
+// Import configuration and middleware
+const config = require('./config/config');
+const errorHandler = require('./middleware/error');
+
+// Import routes
+const pageRoutes = require('./routes/pages');
+const authRoutes = require('./routes/auth');
 
 const app = express();
-const port = 3000;
 
+// Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Session configuration
+app.use(session({
+    secret: config.sessionSecret,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: config.mongoURI,
+        ttl: 24 * 60 * 60 // Session TTL (1 day)
+    }),
+    cookie: {
+        secure: config.env === 'production',
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000 // 1 day
+    }
+}));
+
+// Routes
+app.use('/', pageRoutes);
+app.use('/api', authRoutes);
+
+// Error handling middleware
+app.use(errorHandler);
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/genshininfo', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => {
+// Handle process errors
+process.on('uncaughtException', (error) => {
+    console.error('Uncaught Exception:', error);
+    process.exit(1);
+});
+
+process.on('unhandledRejection', (error) => {
+    console.error('Unhandled Rejection:', error);
+    process.exit(1);
+});
+
+// Connect to MongoDB and start server
+mongoose.connect(config.mongoURI, {
+    // MongoDB will retry the connection automatically
+    serverSelectionTimeoutMS: 5000 // Try for 5 seconds before failing
+})
+.then(() => {
     console.log('Connected to MongoDB');
-}).catch((err) => {
-    console.error('MongoDB connection error:', err);
-});
+    // Start server only after successful database connection
+    const server = app.listen(config.port, () => {
+        console.log(`Server running on http://localhost:${config.port}`);
+    });
 
-// Signup endpoint
-app.post('/signup', async (req, res) => {
-    const { username, email, password } = req.body;
-
-    if (!username || !email || !password) {
-        return res.status(400).json({ message: 'Missing required fields' });
-    }
-
-    try {
-        const existingUser = await User.findOne({ $or: [{ email }, { username }] });
-        if (existingUser) {
-            return res.status(409).json({ message: 'User already exists' });
-        }
-
-        const newUser = new User({ username, email, password });
-        await newUser.save();
-
-        res.status(201).json({ message: 'User created successfully' });
-    } catch (err) {
-        res.status(500).json({ message: 'Server error', error: err.message });
-    }
-});
-
-// Login endpoint
-app.post('/login', async (req, res) => {
-    const { usernameOrEmail, password } = req.body;
-
-    if (!usernameOrEmail || !password) {
-        return res.status(400).json({ message: 'Missing required fields' });
-    }
-
-    try {
-        const user = await User.findOne({
-            $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }]
+    // Handle server shutdown
+    const gracefulShutdown = () => {
+        server.close(() => {
+            console.log('Server closed. Database connections cleaned.');
+            mongoose.connection.close(false, () => {
+                console.log('MongoDb connection closed.');
+                process.exit(0);
+            });
         });
+    };
 
-        if (!user) {
-            return res.status(401).json({ message: 'Invalid credentials' });
-        }
-
-        const isMatch = await user.comparePassword(password);
-        if (!isMatch) {
-            return res.status(401).json({ message: 'Invalid credentials' });
-        }
-
-        res.status(200).json({ message: 'Login successful', user: { username: user.username, email: user.email } });
-    } catch (err) {
-        res.status(500).json({ message: 'Server error', error: err.message });
-    }
-});
-
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
+    // Listen for shutdown signals
+    process.on('SIGTERM', gracefulShutdown);
+    process.on('SIGINT', gracefulShutdown);
+})
+.catch((err) => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
 });
