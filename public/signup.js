@@ -38,6 +38,7 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
         window.location.href = '/login';
     };
 
+    // Validation
     if (username.length < 3) {
         document.getElementById('usernameError').textContent = 'Username must be at least 3 characters.';
         valid = false;
@@ -56,14 +57,27 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
     if (confirmPassword !== password) {
         document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
         valid = false;
-    }    if (valid) {
+    }
+
+    if (valid) {
+        // Show loading state
+        const submitButton = this.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.textContent;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Signing up...';
+
         // Send signup request to the API
         fetch('/api/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ username, email, password })
+            body: JSON.stringify({ 
+                username: username,
+                email: email,
+                password: password 
+            }),
+            credentials: 'include'
         })
         .then(response => {
             if (!response.ok) {
@@ -75,14 +89,8 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
         })
         .then(data => {
             if (data.message === 'User created successfully') {
-                // Set up session data
-                localStorage.setItem('currentUser', JSON.stringify({ 
-                    username: username, 
-                    email: email 
-                }));
-                
-                // Show success popup
-                showPopup('Sign Up Successful! Proceed to Log In', true);
+                // Show success popup and redirect to login
+                showPopup('Sign Up Successful! Redirecting to login...', true);
                 this.reset();
             } else {
                 throw new Error(data.message || 'Signup failed');
@@ -90,7 +98,19 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
         })
         .catch(error => {
             console.error('Signup error:', error);
-            showPopup(error.message || 'An error occurred during signup. Please try again.');
+            // Show specific error messages
+            if (error.message.includes('Username already exists')) {
+                document.getElementById('usernameError').textContent = 'Username is already taken.';
+            } else if (error.message.includes('Email already registered')) {
+                document.getElementById('emailError').textContent = 'Email is already registered.';
+            } else {
+                showPopup(error.message || 'An error occurred during signup. Please try again.');
+            }
+        })
+        .finally(() => {
+            // Reset button state
+            submitButton.disabled = false;
+            submitButton.textContent = originalButtonText;
         });
     }
 });

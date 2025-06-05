@@ -1,77 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css" type="text/css"/>
-    <style>
-        /* Popup confirmation styles */
-        #logout-popup {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.5);
-        }
-        #logout-popup .popup-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 300px;
-            text-align: center;
-            border-radius: 8px;
-        }
-        #logout-popup button {
-            margin: 10px;
-            padding: 8px 16px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-    </style>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>My Favorite Characters - Genshin Impact</title>
+    <link rel="stylesheet" href="favorites.css" type="text/css"/>
 </head>
 <body>
-
-<!-- Navigation Bar -->
-<nav class="navbar">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
         <div class="nav-left">
-            <img class="site-title" src="assets/GenshinImpact/GenshinImpact_Logo.png" height="80" width="250"></img>
-        </div>    <ul class="nav-links">
-    <li><a href="/">Characters</a></li>
-    <li><a href="/favourites">Favorites</a></li>
-    <li><a href="/login" id="login-link">
-        <img src="assets/icons/user-icon.png" alt="Login" class="nav-icon">
-        </a></li>
-    </ul>
-</nav>
+            <a href="/">
+                <img class="site-title" src="assets/GenshinImpact/GenshinImpact_Logo.png" alt="Genshin Impact Logo" height="80" width="250"/>
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/">Characters</a></li>
+            <li><a href="/favourites" class="active">Favorites</a></li>
+            <li><a href="/login" id="login-link">
+                <img src="assets/icons/user-icon.png" alt="Login" class="nav-icon">
+            </a></li>
+        </ul>
+    </nav>
 
-<!-- Character Info Sheet Title -->
-<section class="title-section">
-    <h1>Character Info Sheet</h1>
-</section>
-
-<section class="characters-grid" id="favorites-grid">
-    <!-- Favorite character cards will be dynamically inserted here -->
-</section>
-
-<!-- Message for removal feedback -->
-<div id="favorite-message" style="text-align:center; color: red; font-weight: bold; margin-top: 10px;"></div>
-
-<!-- Logout Confirmation Popup -->
-<div id="logout-popup">
-    <div class="popup-content">
-        <p>Want to log out?</p>
-        <button id="logout-yes">Yes</button>
-        <button id="logout-no">No</button>
+    <!-- Authentication Check Message -->
+    <div id="auth-message" class="auth-message">
+        <div class="auth-content">
+            <h2>Please Log In</h2>
+            <p>You need to be logged in to view your favorites.</p>
+            <div class="auth-buttons">
+                <a href="/login" class="auth-button login">Log In</a>
+                <a href="/signup" class="auth-button signup">Sign Up</a>
+            </div>
+        </div>
     </div>
-</div>
 
-<script src="favorites.js"></script>
+    <!-- Favorites Content (Only shown when logged in) -->
+    <div id="favorites-content">
+        <!-- Favorites Title Section -->
+        <section class="title-section">
+            <h1>My Favorite Characters</h1>
+        </section>
 
+        <!-- Favorites Grid Section -->
+        <section class="characters-grid" id="favorites-grid">
+            <!-- Favorite characters will be dynamically added here -->
+        </section>
+    </div>
+
+    <!-- Popup Modal -->
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <span class="close-btn" onclick="hidePopup()">&times;</span>
+            <img id="popup-img" src="" alt="Full Character">
+        </div>
+    </div>
+
+    <!-- Logout Confirmation Popup -->
+    <div id="logout-popup">
+        <div class="popup-content">
+            <p>Want to log out?</p>
+            <button id="logout-yes">Yes</button>
+            <button id="logout-no">No</button>
+        </div>
+    </div>
+
+    <!-- Favorite toggle message popup -->
+    <div id="favorite-message"></div>
+
+    <script src="favorites.js"></script>
 </body>
 </html>
