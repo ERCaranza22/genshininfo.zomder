@@ -14,6 +14,7 @@ const errorHandler = require('./middleware/error');
 // Import routes
 const pageRoutes = require('./routes/pages');
 const authRoutes = require('./routes/auth');
+const characterRoutes = require('./routes/characters');
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use(session({
 // Routes
 app.use('/', pageRoutes);
 app.use('/api', authRoutes);
+app.use('/api/characters', characterRoutes);
 
 // Error handling middleware
 app.use(errorHandler);
