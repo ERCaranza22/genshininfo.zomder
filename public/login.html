@@ -34,7 +34,7 @@
             
             <button type="submit">Login</button>
         </form>
-        <p class="redirect-text">Don't have an account? <a href="/signup">Sign up</a></p>
+        <p class="redirect-text">Don't have an account? <a href="/signup" id="signupLink">Sign up</a></p>
     </div>
 
     <!-- Popup message container -->
@@ -44,6 +44,13 @@
             <button id="popupOkButton" style="display:none; margin-top: 15px; padding: 8px 16px; font-size: 16px; cursor: pointer;">OK</button>
         </div>
     </div>
+
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Logging in...</div>
+    </div>
+
     <script src="login.js"></script>
 </body>
 </html>

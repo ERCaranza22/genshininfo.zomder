@@ -12,15 +12,23 @@
 <!-- Navigation Bar -->
 <nav class="navbar">
     <div class="nav-left">
-        <img class="site-title" src="assets/GenshinImpact/GenshinImpact_Logo.png" height="80" width="250"></img>
+        <img class="site-title" src="assets/GenshinImpact/GenshinImpact_Logo.png" height="80" width="250" alt="Genshin Impact"></img>
     </div>
-<ul class="nav-links">    <li><a href="/">Characters</a></li>
+<ul class="nav-links">    <li><a href="/" class="active">Characters</a></li>
     <li><a href="/favourites">Favorites</a></li>
-    <li><a href="/login" id="login-link">
-    <img src="assets/icons/user-icon.png" alt="Login" class="nav-icon">
-    </a></li>
+    <li>
+        <div class="user-section">
+            <a href="/login" id="login-link">
+                <img src="assets/icons/user-icon.png" alt="Login" class="nav-icon">
+            </a>
+            <span id="username-display" class="username-display"></span>
+        </div>
+    </li>
 </ul>
 </nav>
+
+<!-- Session Message -->
+<div id="session-message" class="session-message"></div>
 
 <!-- Character Info Sheet Title -->
 <section class="title-section">
@@ -568,18 +576,26 @@
 </div>
 
 <!-- Logout Confirmation Popup -->
-<div id="logout-popup">
+<div id="logout-popup" class="popup-overlay">
     <div class="popup-content">
         <p>Want to log out?</p>
-        <button id="logout-yes">Yes</button>
-        <button id="logout-no">No</button>
+        <div class="popup-buttons">
+            <button id="logout-yes">Yes</button>
+            <button id="logout-no">No</button>
+        </div>
     </div>
 </div>
 
-<script src="index.js"></script>
+<!-- Loading Overlay -->
+<div id="loading-overlay" class="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Loading...</div>
+</div>
 
 <!-- Favorite toggle message popup -->
-<div id="favorite-message" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: #333; color: white; padding: 10px 20px; border-radius: 5px; display: none; font-size: 16px; z-index: 1000; opacity: 0; transition: opacity 0.5s;"></div>
+<div id="favorite-message" class="favorite-message"></div>
+
+<script src="index.js"></script>
 
 </body>
 </html>

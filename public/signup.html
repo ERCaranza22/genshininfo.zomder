@@ -59,7 +59,7 @@
             
             <button type="submit">Sign Up</button>
         </form>
-        <p class="redirect-text">Already have an account? <a href="/login">Log in</a></p>
+        <p class="redirect-text">Already have an account? <a href="/login" id="loginLink">Log in</a></p>
     </div>
 
     <!-- Popup message container -->
@@ -69,6 +69,13 @@
             <button id="popupOkButton" style="display:none; margin-top: 15px; padding: 8px 16px; font-size: 16px; cursor: pointer;">OK</button>
         </div>
     </div>
+
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Creating account...</div>
+    </div>
+
     <script src="signup.js"></script>
 </body>
 </html>
