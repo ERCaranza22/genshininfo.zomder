@@ -1,11 +1,24 @@
+/**
+ * Check if user is authenticated through session
+ */
 const isAuthenticated = (req, res, next) => {
     if (req.session && req.session.user) {
         return next();
     }
-    if (req.xhr || req.headers.accept.indexOf('json') > -1) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
-    res.redirect(`/login?returnUrl=${encodeURIComponent(req.originalUrl)}`);
+    res.status(401).json({ message: 'Authentication required' });
 };
 
-module.exports = { isAuthenticated };
+/**
+ * Check if user is NOT authenticated (for login/signup pages)
+ */
+const isNotAuthenticated = (req, res, next) => {
+    if (!req.session || !req.session.user) {
+        return next();
+    }
+    res.redirect('/');
+};
+
+module.exports = {
+    isAuthenticated,
+    isNotAuthenticated
+};

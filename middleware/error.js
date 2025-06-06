@@ -1,30 +1,23 @@
 // Error handling middleware
-const errorHandler = (err, req, res, next) => {
+module.exports = (err, req, res, next) => {
     console.error(err.stack);
-
-    // Default error
-    let statusCode = 500;
-    let message = 'Something went wrong!';
-
-    // Handle specific error types
+    
     if (err.name === 'ValidationError') {
-        statusCode = 400;
-        message = err.message;
-    } else if (err.name === 'UnauthorizedError') {
-        statusCode = 401;
-        message = 'Unauthorized access';
-    } else if (err.code === 11000) {
-        statusCode = 409;
-        message = 'Duplicate resource found';
+        return res.status(400).json({
+            message: 'Validation Error',
+            errors: Object.values(err.errors).map(e => e.message)
+        });
     }
-
-    res.status(statusCode).json({
-        success: false,
-        error: {
-            message,
-            ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-        }
+    
+    if (err.name === 'MongoError' && err.code === 11000) {
+        return res.status(400).json({
+            message: 'Duplicate key error',
+            field: Object.keys(err.keyValue)[0]
+        });
+    }
+    
+    res.status(500).json({
+        message: 'Internal Server Error',
+        error: process.env.NODE_ENV === 'development' ? err.message : undefined
     });
 };
-
-module.exports = errorHandler;
