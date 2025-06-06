@@ -1,26 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
     const loginButton = document.getElementById('loginButton');
-    const usernameOrEmail = document.getElementById('usernameOrEmail');
-    const password = document.getElementById('password');
-    const togglePassword = document.getElementById('togglePassword');
+    const togglePasswordButton = document.getElementById('togglePassword');
     const popup = document.getElementById('popup');
     const popupMessage = document.getElementById('popupMessage');
     const popupOkButton = document.getElementById('popupOkButton');
-    
-    // Check if user is already logged in
-    if (localStorage.getItem('isAuthenticated') === 'true') {
-        window.location.href = 'index.html';
-        return;
-    }
 
-    // Check for "remember me" and restore email/username if present
-    const rememberedUser = localStorage.getItem('rememberedUser');
-    if (rememberedUser) {
-        usernameOrEmail.value = rememberedUser;
-        document.getElementById('rememberMe').checked = true;
-    }
-    
+    // Check if user is already logged in
+    api.auth.checkSession()
+        .then(response => {
+            if (response.user) {
+                window.location.href = '/index.html';
+            }
+        })
+        .catch(error => console.error('Session check failed:', error));
+
+    // Toggle password visibility
+    togglePasswordButton.addEventListener('click', () => {
+        const type = passwordInput.type === 'password' ? 'text' : 'password';
+        passwordInput.type = type;
+        togglePasswordButton.querySelector('i').className = `fas fa-${type === 'password' ? 'eye' : 'eye-slash'}`;
+    });
+
     // Handle form submission
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -28,85 +31,65 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear previous errors
         clearErrors();
         
+        // Get form values
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value.trim();
+        
         // Validate inputs
-        let isValid = validateForm();
-        if (!isValid) return;
-        
-        // Disable login button and show loading state
-        loginButton.disabled = true;
-        loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
-        
-        try {
-            // For demo purposes - replace with your actual authentication
-            if (usernameOrEmail.value === 'test' && password.value === 'test123') {
-                // Set authentication state
-                localStorage.setItem('isAuthenticated', 'true');
-                localStorage.setItem('currentUser', JSON.stringify({
-                    username: 'test',
-                    email: 'test@example.com'
-                }));
-                
-                // Handle remember me
-                const rememberMe = document.getElementById('rememberMe').checked;
-                if (rememberMe) {
-                    localStorage.setItem('rememberedUser', usernameOrEmail.value);
-                } else {
-                    localStorage.removeItem('rememberedUser');
-                }
-
-                showPopupMessage('Login successful! Redirecting...', false);
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1500);
-            } else {
-                throw new Error('Invalid username or password');
-            }
-        } catch (error) {
-            showPopupMessage(error.message || 'Login failed. Please try again.', true);
-            password.value = '';
-        } finally {
-            loginButton.disabled = false;
-            loginButton.innerHTML = 'Login';
-        }
-    });
-    
-    // Toggle password visibility
-    togglePassword.addEventListener('click', () => {
-        const type = password.type === 'password' ? 'text' : 'password';
-        password.type = type;
-        togglePassword.querySelector('i').className = `fas fa-eye${type === 'password' ? '' : '-slash'}`;
-    });
-    
-    // Form validation
-    function validateForm() {
         let isValid = true;
         
-        if (!usernameOrEmail.value.trim()) {
-            showError('usernameOrEmailError', 'Username or email is required');
+        if (!username) {
+            showError('usernameError', 'Username is required');
             isValid = false;
         }
         
-        if (!password.value) {
+        if (!password) {
             showError('passwordError', 'Password is required');
             isValid = false;
         }
         
-        return isValid;
-    }
-    
-    // Show error message
+        if (!isValid) return;
+        
+        // Disable login button
+        loginButton.disabled = true;
+        loginButton.textContent = 'Logging in...';
+        
+        try {
+            // Attempt login
+            const response = await api.auth.login(username, password);
+            
+            // Show success message
+            showPopup('Login successful! Redirecting...', true);
+            
+            // Store session if remember me is checked
+            if (document.getElementById('rememberMe').checked) {
+                localStorage.setItem('rememberMe', 'true');
+            }
+            
+            // Redirect after a short delay
+            setTimeout(() => {
+                window.location.href = '/index.html';
+            }, 1500);
+            
+        } catch (error) {
+            // Show error message
+            showPopup(error.message || 'Login failed. Please try again.', false);
+            
+            // Re-enable login button
+            loginButton.disabled = false;
+            loginButton.textContent = 'Login';
+        }
+    });
+
+    // Helper functions
     function showError(elementId, message) {
         const errorElement = document.getElementById(elementId);
-        errorElement.textContent = message;
-        errorElement.style.display = 'block';
-        
-        // Add shake animation
-        const input = document.querySelector(`#${elementId.replace('Error', '')}`);
-        input.classList.add('shake');
-        setTimeout(() => input.classList.remove('shake'), 500);
+        if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
     }
-    
-    // Clear all error messages
+
     function clearErrors() {
         const errorElements = document.querySelectorAll('.error');
         errorElements.forEach(element => {
@@ -114,32 +97,19 @@ document.addEventListener('DOMContentLoaded', () => {
             element.style.display = 'none';
         });
     }
-    
-    // Show popup message
-    function showPopupMessage(message, isError = false) {
-        popupMessage.textContent = message;
-        popupMessage.className = isError ? 'error-message' : 'success-message';
-        popupOkButton.style.display = 'block';
-        popup.style.display = 'flex';
-    }
-    
-    // Handle popup OK button
-    popupOkButton.addEventListener('click', () => {
-        popup.style.display = 'none';
-    });
-    
-    // Close popup when clicking outside
-    popup.addEventListener('click', (e) => {
-        if (e.target === popup) {
-            popup.style.display = 'none';
-        }
-    });
 
-    // Handle Enter key in password field
-    password.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            loginButton.click();
+    function showPopup(message, isSuccess = true) {
+        popupMessage.textContent = message;
+        popupMessage.className = isSuccess ? 'success' : 'error';
+        popup.style.display = 'flex';
+        
+        if (!isSuccess) {
+            popupOkButton.style.display = 'block';
+            popupOkButton.onclick = () => {
+                popup.style.display = 'none';
+            };
+        } else {
+            popupOkButton.style.display = 'none';
         }
-    });
+    }
 }); 

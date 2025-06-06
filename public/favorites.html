@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Favorites - Genshin Impact</title>
+    <title>My Favorites - Genshin Impact</title>
     <link rel="stylesheet" href="style.css" type="text/css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <style>
@@ -50,13 +50,14 @@
         <li><a href="favorites.html" class="active">Favorites</a></li>
         <li><a href="login.html" id="login-link">
             <img src="assets/icons/user-icon.png" alt="Login" class="nav-icon">
+            <span id="username-display"></span>
         </a></li>
     </ul>
 </nav>
 
 <!-- Favorites Title Section -->
 <section class="title-section">
-    <h1>Your Favorite Characters</h1>
+    <h1>My Favorite Characters</h1>
 </section>
 
 <!-- Favorites Grid Section -->
@@ -67,6 +68,18 @@
         <a href="index.html" class="browse-link">Browse Characters</a>
     </div>
 </section>
+
+<!-- Loading Indicator -->
+<div id="loadingIndicator" class="loading-indicator">
+    <div class="spinner"></div>
+    <p>Loading favorites...</p>
+</div>
+
+<!-- Image Popup -->
+<div id="imagePopup" class="popup">
+    <span class="close-popup">&times;</span>
+    <img id="popupImage" src="" alt="Character Full Image">
+</div>
 
 <!-- Popup Modal -->
 <div class="popup" id="popup">
@@ -86,7 +99,8 @@
 </div>
 
 <!-- Scripts -->
-<script src="js/auth.js"></script>
+<script src="api.js"></script>
+<script src="favorites.js"></script>
 <script>
     // Check authentication on page load
     document.addEventListener('DOMContentLoaded', async function() {
@@ -99,7 +113,6 @@
         loadFavorites();
     });
 </script>
-<script src="favorites.js"></script>
 
 <!-- Favorite toggle message popup -->
 <div id="favorite-message" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: #333; color: white; padding: 10px 20px; border-radius: 5px; display: none; font-size: 16px; z-index: 1000; opacity: 0; transition: opacity 0.5s;"></div>
