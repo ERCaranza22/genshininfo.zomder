@@ -3,54 +3,44 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Login - Genshin Impact</title>
+    <title>Login</title>
     <link rel="stylesheet" href="login.css" />
 </head>
 <body>
     <div class="container">
         <h2>Login to Your Account</h2>
-        <form id="loginForm" novalidate>
+        <form id="loginForm" onsubmit="return false;" novalidate>
             <label for="usernameOrEmail">Username or Email</label>
-            <input 
-                type="text" 
-                id="usernameOrEmail" 
-                name="usernameOrEmail" 
-                required 
-                autocomplete="username"
-                placeholder="Enter your username or email"
-            />
-            <span class="error" id="usernameOrEmailError" aria-live="polite"></span>
+            <input type="text" id="usernameOrEmail" name="usernameOrEmail" required autocomplete="username" />
+            <span class="error" id="usernameOrEmailError"></span>
 
             <label for="password">Password</label>
-            <input 
-                type="password" 
-                id="password" 
-                name="password" 
-                required 
-                autocomplete="current-password"
-                placeholder="Enter your password"
-            />
-            <span class="error" id="passwordError" aria-live="polite"></span>
-            
-            <button type="submit">Login</button>
-        </form>
-        <p class="redirect-text">Don't have an account? <a href="/signup" id="signupLink">Sign up</a></p>
-    </div>
+            <div class="password-container">
+                <input type="password" id="password" name="password" required autocomplete="current-password" />
+                <button type="button" id="togglePassword" class="toggle-password">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+            <span class="error" id="passwordError"></span>
 
+            <div class="remember-me">
+                <input type="checkbox" id="rememberMe" name="rememberMe" />
+                <label for="rememberMe">Remember me</label>
+            </div>
+
+            <button type="submit" id="loginButton">Login</button>
+        </form>
+        <p class="redirect-text">Don't have an account? <a href="signup.html">Sign up</a></p>
+    </div>
     <!-- Popup message container -->
-    <div id="popup" class="popup-overlay" role="alert" aria-live="assertive" aria-atomic="true">
+    <div id="popup" class="popup-overlay">
         <div class="popup-content">
             <div id="popupMessage"></div>
             <button id="popupOkButton" style="display:none; margin-top: 15px; padding: 8px 16px; font-size: 16px; cursor: pointer;">OK</button>
         </div>
     </div>
-
-    <!-- Loading overlay -->
-    <div id="loadingOverlay" class="loading-overlay">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">Logging in...</div>
-    </div>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <script src="auth.js"></script>
     <script src="login.js"></script>
 </body>
 </html>

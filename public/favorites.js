@@ -1,243 +1,480 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const loginLink = document.getElementById('login-link');
-    const usernameDisplay = document.getElementById('username-display');
-    const logoutPopup = document.getElementById('logout-popup');
-    const logoutYes = document.getElementById('logout-yes');
-    const logoutNo = document.getElementById('logout-no');
-    const loadingOverlay = document.getElementById('loading-overlay');
-    const sessionMessage = document.getElementById('session-message');
-    const authMessage = document.getElementById('auth-message');
-    const favoritesContent = document.getElementById('favorites-content');
+/**
+ * Utility to get favorites from localStorage
+ * @returns {Array} Array of favorite character names
+ */
+function getFavorites() {
+    const favs = localStorage.getItem('favorites');
+    return favs ? JSON.parse(favs) : [];
+}
+
+/**
+ * Utility to save favorites to localStorage
+ * @param {Array} favorites - Array of favorite character names
+ */
+function saveFavorites(favorites) {
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+}
+
+/**
+ * Character data mapping for rendering favorite cards
+ */
+const characterData = {
+    "Albedo": {
+        icon: "assets/characters/icon/Albedo_Icon.png",
+        element: "assets/elements/geo-element.png",
+        elementAlt: "Geo",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Sword",
+        fullImage: "assets/characters/wish/Albedo.png"
+    },
+    "Amber": {
+        icon: "assets/characters/icon/Amber_Icon.png",
+        element: "assets/elements/pyro-element.png",
+        elementAlt: "Pyro",
+        stars: "⭐⭐⭐⭐",
+        weapon: "Bow",
+        fullImage: "assets/characters/wish/Amber.png"
+    },
+    "Arlecchino": {
+        icon: "assets/characters/icon/Arlecchino_Icon.png",
+        element: "assets/elements/pyro-element.png",
+        elementAlt: "Pyro",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Polearm",
+        fullImage: "assets/characters/wish/Arlecchino.png"
+    },
+
+    "Bennett": {
+        icon: "assets/characters/icon/Bennett_Icon.png",
+        element: "assets/elements/pyro-element.png",
+        elementAlt: "Pyro",
+        stars: "⭐⭐⭐⭐",
+        weapon: "Sword",
+        fullImage: "assets/characters/wish/Bennett.png"
+    },
+
+    "Diluc": {
+        icon: "assets/characters/icon/Diluc_Icon.png",
+        element: "assets/elements/pyro-element.png",
+        elementAlt: "Pyro",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Claymore",
+        fullImage: "assets/characters/wish/Diluc.png"
+    },
+
+    "Diona": {
+        icon: "assets/characters/icon/Diona_Icon.png",
+        element: "assets/elements/cryo-element.png",
+        elementAlt: "Cryo",
+        stars: "⭐⭐⭐⭐",
+        weapon: "Bow",
+        fullImage: "assets/characters/wish/Diona.png"
+    },
+
+    "Eula": {
+        icon: "assets/characters/icon/Eula_Icon.png",
+        element: "assets/elements/cryo-element.png",
+        elementAlt: "Cryo",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Claymore",
+        fullImage: "assets/characters/wish/Eula.png"
+    },
+
+    "Fischl": {
+        icon: "assets/characters/icon/Fischl_Icon.png",
+        element: "assets/elements/electro-element.png",
+        elementAlt: "Electro",
+        stars: "⭐⭐⭐⭐",
+        weapon: "Bow",
+        fullImage: "assets/characters/wish/Fischl.png"
+    },
+
+    "Ganyu": {
+        icon: "assets/characters/icon/Ganyu_Icon.png",
+        element: "assets/elements/cryo-element.png",
+        elementAlt: "Cryo",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Bow",
+        fullImage: "assets/characters/wish/Ganyu.png"
+    },
+
+    "HuTao": {
+        icon: "assets/characters/icon/Hu_Tao_Icon.png",
+        element: "assets/elements/pyro-element.png",
+        elementAlt: "Pyro",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Polearm",
+        fullImage: "assets/characters/wish/Hu_Tao.png"
+    },
+
+    "KaedeharaKazuha": {
+        icon: "assets/characters/icon/Kaedehara_Kazuha_Icon.png",
+        element: "assets/elements/anemo-element.png",
+        elementAlt: "Anemo",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Sword",
+        fullImage: "assets/characters/wish/Kaedehara_Kazuha.png"
+    },
+
+    "KamisatoAyaka": {
+        icon: "assets/characters/icon/Kamisato_Ayaka_Icon.png",
+        element: "assets/elements/cryo-element.png",
+        elementAlt: "Cryo",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Sword",
+        fullImage: "assets/characters/wish/Kamisato_Ayaka.png"
+    },
+
+    "KamisatoAyato": {
+        icon: "assets/characters/icon/Kamisato_Ayato_Icon.png",
+        element: "assets/elements/hydro-element.png",
+        elementAlt: "Hydro",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Sword",
+        fullImage: "assets/characters/wish/Kamisato_Ayato.png"
+    },
+
+    "Keqing": {
+        icon: "assets/characters/icon/Keqing_Icon.png",
+        element: "assets/elements/electro-element.png",
+        elementAlt: "Electro",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Sword",
+        fullImage: "assets/characters/wish/Keqing.png"
+    },
+
+    "Klee": {
+        icon: "assets/characters/icon/Klee_Icon.png",
+        element: "assets/elements/pyro-element.png",
+        elementAlt: "Pyro",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Catalyst",
+        fullImage: "assets/characters/wish/Klee.png"
+    },
+
+    "KukiShinobu": {
+        icon: "assets/characters/icon/Kuki_Shinobu_Icon.png",
+        element: "assets/elements/electro-element.png",
+        elementAlt: "Electro",
+        stars: "⭐⭐⭐⭐",
+        weapon: "Sword",
+        fullImage: "assets/characters/wish/Kuki_Shinobu.png"
+    },
+
+    "Mona": {
+        icon: "assets/characters/icon/Mona_Icon.png",
+        element: "assets/elements/hydro-element.png",
+        elementAlt: "Hydro",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Catalyst",
+        fullImage: "assets/characters/wish/Mona.png"
+    },
+
+    "Ningguang": {
+        icon: "assets/characters/icon/Ningguang_Icon.png",
+        element: "assets/elements/geo-element.png",
+        elementAlt: "Geo",
+        stars: "⭐⭐⭐⭐",
+        weapon: "Catalyst",
+        fullImage: "assets/characters/wish/Ningguang.png"
+    },
+
+    "Noelle": {
+        icon: "assets/characters/icon/Noelle_Icon.png",
+        element: "assets/elements/geo-element.png",
+        elementAlt: "Geo",
+        stars: "⭐⭐⭐⭐",
+        weapon: "Claymore",
+        fullImage: "assets/characters/wish/Noelle.png"
+    },
+
+    "RaidenShogun": {
+        icon: "assets/characters/icon/Raiden_Shogun_Icon.png",
+        element: "assets/elements/electro-element.png",
+        elementAlt: "Electro",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Polearm",
+        fullImage: "assets/characters/wish/Raiden_Shogun.png"
+    },
+
+    "ShikanoinHeizou": {
+        icon: "assets/characters/icon/Shikanoin_Heizou_Icon.png",
+        element: "assets/elements/anemo-element.png",
+        elementAlt: "Anemo",
+        stars: "⭐⭐⭐⭐",
+        weapon: "Catalyst",
+        fullImage: "assets/characters/wish/Shikanoin_Heizou.png"
+    },
+
+    "Sucrose": {
+        icon: "assets/characters/icon/Sucrose_Icon.png",
+        element: "assets/elements/anemo-element.png",
+        elementAlt: "Anemo",
+        stars: "⭐⭐⭐⭐",
+        weapon: "Catalyst",
+        fullImage: "assets/characters/wish/Sucrose.png"
+    },
+
+    "Tartaglia": {
+        icon: "assets/characters/icon/Tartaglia_Icon.png",
+        element: "assets/elements/hydro-element.png",
+        elementAlt: "Hydro",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Bow",
+        fullImage: "assets/characters/wish/Tartaglia.png"
+    },
+
+    "Venti": {
+        icon: "assets/characters/icon/Venti_Icon.png",
+        element: "assets/elements/anemo-element.png",
+        elementAlt: "Anemo",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Bow",
+        fullImage: "assets/characters/wish/Venti.png"
+    },
+
+
+    "Xiao": {
+        icon: "assets/characters/icon/Xiao_Icon.png",
+        element: "assets/elements/anemo-element.png",
+        elementAlt: "Anemo",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Polearm",
+        fullImage: "assets/characters/wish/Xiao.png"
+    },
+
+    "Xingqiu": {
+        icon: "assets/characters/icon/Xingqiu_Icon.png",
+        element: "assets/elements/hydro-element.png",
+        elementAlt: "Hydro",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Sword",
+        fullImage: "assets/characters/wish/Xingqiu.png"
+    },
+
+    "YaeMiko": {
+        icon: "assets/characters/icon/Yae_Miko_Icon.png",
+        element: "assets/elements/electro-element.png",
+        elementAlt: "Electro",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Catalyst",
+        fullImage: "assets/characters/wish/Yae_Miko.png"
+    },
+
+    "Yanfei": {
+        icon: "assets/characters/icon/Yanfei_Icon.png",
+        element: "assets/elements/pyro-element.png",
+        elementAlt: "Pyro",
+        stars: "⭐⭐⭐⭐",
+        weapon: "Catalyst",
+        fullImage: "assets/characters/wish/Yanfei.png"
+    },
+
+    "Yelan": {
+        icon: "assets/characters/icon/Yelan_Icon.png",
+        element: "assets/elements/hydro-element.png",
+        elementAlt: "Hydro",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Bow",
+        fullImage: "assets/characters/wish/Yelan.png"
+    },
+
+    "Yoimiya": {
+        icon: "assets/characters/icon/Yoimiya_Icon.png",
+        element: "assets/elements/pyro-element.png",
+        elementAlt: "Pyro",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Bow",
+        fullImage: "assets/characters/wish/Yoimiya.png"
+    },
+
+    "Zhongli": {
+        icon: "assets/characters/icon/Zhongli_Icon.png",
+        element: "assets/elements/geo-element.png",
+        elementAlt: "Geo",
+        stars: "⭐⭐⭐⭐⭐",
+        weapon: "Polearm",
+        fullImage: "assets/characters/wish/Zhongli.png"
+    },
+
+
+};
+
+/**
+ * Create a character card element for favorites page
+ * @param {string} name - Character name
+ * @param {object} data - Character data object
+ * @returns {HTMLElement} Character card element
+ */
+function createCharacterCard(name, data) {
+    const cardDiv = document.createElement('div');
+    cardDiv.className = `card_${name.toLowerCase().replace(/\s+/g, '_')}`;
+
+    cardDiv.innerHTML = `
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="${data.icon}" alt="${name}">
+                <img class="element-icon" src="${data.element}" alt="${data.elementAlt}">
+            </div>
+            <div class="character-info hidden">
+                <h2>${name}</h2>
+                <div class="stars">${data.stars}</div>
+                <p>Weapon: ${data.weapon}</p>
+                <button onclick="showPopup(event, '${data.fullImage}')">Full Image</button>
+                <button class="remove-favorite-button">Remove</button>
+            </div>
+        </div>
+    `;
+    // Add event listener for remove button
+    cardDiv.querySelector('.remove-favorite-button').addEventListener('click', () => {
+        let favorites = getFavorites();
+        favorites = favorites.filter(fav => fav !== name);
+        saveFavorites(favorites);
+        renderFavorites();
+
+        // Show removal message
+        const messageDiv = document.getElementById('favorite-message');
+        if (messageDiv) {
+            messageDiv.textContent = `${name} removed from favorites.`;
+            // Clear message after 3 seconds
+            setTimeout(() => {
+                messageDiv.textContent = '';
+            }, 3000);
+        }
+    });
+    return cardDiv;
+}
+
+/**
+ * Render favorites on favorites.html
+ */
+function renderFavorites() {
     const favoritesGrid = document.getElementById('favorites-grid');
+    if (!favoritesGrid) return;
 
-    // Check session status on page load
-    checkSession();
-
-    // Function to check session status
-    async function checkSession() {
-        try {
-            showLoading(true);
-            const response = await fetch('/api/session', {
-                credentials: 'include'
-            });
-            const data = await response.json();
-
-            if (data.authenticated) {
-                // User is logged in
-                loginLink.href = '#';
-                loginLink.onclick = showLogoutPopup;
-                
-                // Update username display with welcome message
-                usernameDisplay.textContent = `Welcome, ${data.username}!`;
-                usernameDisplay.style.display = 'block';
-                
-                // Store username in sessionStorage for persistence
-                sessionStorage.setItem('username', data.username);
-                
-                // Hide auth message and show favorites content
-                authMessage.style.display = 'none';
-                favoritesContent.classList.remove('hidden');
-                
-                // Load favorites
-                loadFavorites();
-            } else {
-                // User is not logged in
-                loginLink.href = '/login';
-                loginLink.onclick = null;
-                usernameDisplay.style.display = 'none';
-                
-                // Clear stored username
-                sessionStorage.removeItem('username');
-                
-                // Show auth message and hide favorites content
-                authMessage.style.display = 'flex';
-                favoritesContent.classList.add('hidden');
-            }
-        } catch (error) {
-            console.error('Error checking session:', error);
-            showMessage('Error checking session status');
-        } finally {
-            showLoading(false);
-        }
-    }
-
-    // Function to load favorites
-    async function loadFavorites() {
-        try {
-            showLoading(true);
-            const response = await fetch('/api/favorites', {
-                credentials: 'include'
-            });
-            
-            if (response.ok) {
-                const favorites = await response.json();
-                displayFavorites(favorites);
-            } else {
-                throw new Error('Failed to load favorites');
-            }
-        } catch (error) {
-            console.error('Error loading favorites:', error);
-            showMessage('Error loading favorites');
-        } finally {
-            showLoading(false);
-        }
-    }
-
-    // Function to display favorites
-    function displayFavorites(favorites) {
         favoritesGrid.innerHTML = '';
         
-        if (favorites.length === 0) {
-            favoritesGrid.innerHTML = '<div class="no-favorites">No favorite characters yet</div>';
+    const favorites = getFavorites();
+    if (favorites.length === 0) {
+        favoritesGrid.textContent = 'No character added here';
             return;
         }
 
-        favorites.forEach(character => {
-            const characterCard = createCharacterCard(character);
-            favoritesGrid.appendChild(characterCard);
+    favorites.forEach(name => {
+        const data = characterData[name];
+        if (data) {
+            const card = createCharacterCard(name, data);
+            favoritesGrid.appendChild(card);
+        }
+    });
+}
+
+/**
+ * Toggle character info on image click
+ * @param {HTMLElement} imageContainer - The image container element
+ */
+function toggleInfo(imageContainer) {
+    const card = imageContainer.closest('.character-card');
+    const info = card.querySelector('.character-info');
+    info.classList.toggle('hidden');
+}
+
+/**
+ * Show full image popup
+ * @param {Event} event - Click event
+ * @param {string} imageUrl - URL of the full image
+ */
+function showPopup(event, imageUrl) {
+    event.stopPropagation();
+    const popup = document.getElementById('popup');
+    const popupImg = document.getElementById('popup-img');
+    popupImg.src = imageUrl;
+    popup.style.display = 'flex';
+    document.body.classList.add('no-scroll');
+}
+
+/**
+ * Hide the popup
+ */
+function hidePopup() {
+    const popup = document.getElementById('popup');
+    const popupImg = document.getElementById('popup-img');
+    popup.style.display = 'none';
+    popupImg.src = '';
+    document.body.classList.remove('no-scroll');
+}
+
+// Close popup when clicking outside the image
+document.addEventListener('click', (e) => {
+    const popup = document.getElementById('popup');
+    if (popup.style.display === 'flex' && !e.target.closest('.popup-content')) {
+        hidePopup();
+    }
+});
+
+// Check session status before loading favorites
+async function checkSession() {
+    try {
+        const response = await fetch('/api/session');
+        const data = await response.json();
+        
+        if (!data.authenticated) {
+            window.location.href = '/login';
+            return false;
+        }
+        return true;
+    } catch (error) {
+        console.error('Session check failed:', error);
+        window.location.href = '/login';
+        return false;
+    }
+}
+
+// Modify the initial render to check session first
+document.addEventListener('DOMContentLoaded', async () => {
+    const isAuthenticated = await checkSession();
+    if (isAuthenticated) {
+        renderFavorites();
+        updateLoginStatus();
+    }
+});
+
+/**
+ * Update the login link text and href based on login state
+ */
+function updateLoginStatus() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const loginLink = document.getElementById('login-link');
+    if (!loginLink) return;    if (currentUser) {
+        loginLink.textContent = 'Profile';
+        loginLink.href = '/profile'; // Adjust if needed
+
+        // Add click event to toggle logout
+        loginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Toggle logout: clear currentUser and update UI
+            localStorage.removeItem('currentUser');
+            updateLoginStatus();
         });
-    }
-
-    // Function to create character card
-    function createCharacterCard(character) {
-        const cardDiv = document.createElement('div');
-        cardDiv.className = `card_${character.name.toLowerCase().replace(/\s+/g, '-')}`;
-        
-        cardDiv.innerHTML = `
-            <div class="character-card">
-                <div class="image-container" onclick="toggleInfo(this)">
-                    <img class="character-img" src="${character.iconUrl}" alt="${character.name}">
-                    <img class="element-icon" src="${character.elementUrl}" alt="${character.element}">
-                </div>
-                <div class="character-info hidden">
-                    <h2>${character.name}</h2>
-                    <div class="${character.rarity}-stars">${'⭐'.repeat(character.rarity)}</div>
-                    <p>Weapon: ${character.weapon}</p>
-                    <button onclick="showPopup(event, '${character.wishUrl}')">Full Image</button>
-                    <button class="favorite-button active" onclick="removeFavorite('${character.name}')">❤️</button>
-                </div>
-            </div>
-        `;
-        
-        return cardDiv;
-    }
-
-    // Function to remove favorite
-    async function removeFavorite(characterName) {
-        try {
-            const response = await fetch(`/api/favorites/${encodeURIComponent(characterName)}`, {
-                method: 'DELETE',
-                credentials: 'include'
-            });
-
-            if (response.ok) {
-                showFavoriteMessage(`${characterName} removed from favorites`);
-                loadFavorites(); // Reload the favorites grid
             } else {
-                throw new Error('Failed to remove favorite');
-            }
-        } catch (error) {
-            console.error('Error removing favorite:', error);
-            showFavoriteMessage('Error removing favorite');
-        }
+        loginLink.textContent = '';
+        const userIcon = document.createElement('img');
+        userIcon.src = 'assets/icons/user-icon.png';
+        userIcon.alt = 'Login';
+        userIcon.className = 'nav-icon';
+        loginLink.href = '/login';
+        loginLink.innerHTML = '';
+        loginLink.appendChild(userIcon);
+
+        // Remove any previous click event listeners by cloning
+        const newLoginLink = loginLink.cloneNode(true);
+        loginLink.parentNode.replaceChild(newLoginLink, loginLink);
     }
+}
 
-    // Function to show loading overlay
-    function showLoading(show) {
-        loadingOverlay.style.display = show ? 'flex' : 'none';
+// Listen for changes to localStorage favorites and update the favorites grid dynamically
+window.addEventListener('storage', (event) => {
+    if (event.key === 'favorites') {
+        renderFavorites();
     }
-
-    // Function to show session message
-    function showMessage(message) {
-        sessionMessage.textContent = message;
-        sessionMessage.style.display = 'block';
-        setTimeout(() => {
-            sessionMessage.style.display = 'none';
-        }, 3000);
-    }
-
-    // Function to show favorite message
-    function showFavoriteMessage(message) {
-        const favoriteMessage = document.getElementById('favorite-message');
-        favoriteMessage.textContent = message;
-        favoriteMessage.style.display = 'block';
-        favoriteMessage.style.opacity = '1';
-        
-        setTimeout(() => {
-            favoriteMessage.style.opacity = '0';
-            setTimeout(() => {
-                favoriteMessage.style.display = 'none';
-            }, 500);
-        }, 2000);
-    }
-
-    // Function to show logout popup
-    function showLogoutPopup(event) {
-        event.preventDefault();
-        logoutPopup.style.display = 'flex';
-    }
-
-    // Handle logout confirmation
-    logoutYes.addEventListener('click', async function() {
-        try {
-            showLoading(true);
-            const response = await fetch('/api/logout', {
-                method: 'POST',
-                credentials: 'include'
-            });
-
-            if (response.ok) {
-                // Clear stored username
-                sessionStorage.removeItem('username');
-                showMessage('Logged out successfully');
-                
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
-            } else {
-                throw new Error('Logout failed');
-            }
-        } catch (error) {
-            console.error('Error during logout:', error);
-            showMessage('Error during logout');
-        } finally {
-            showLoading(false);
-            logoutPopup.style.display = 'none';
-        }
-    });
-
-    // Handle logout cancellation
-    logoutNo.addEventListener('click', function() {
-        logoutPopup.style.display = 'none';
-    });
-
-    // Existing functions for character info and popup
-    window.toggleInfo = function(element) {
-        const info = element.parentElement.querySelector('.character-info');
-        info.classList.toggle('hidden');
-    };
-
-    window.showPopup = function(event, imageSrc) {
-        event.stopPropagation();
-        const popup = document.getElementById('popup');
-        const popupImg = document.getElementById('popup-img');
-        popupImg.src = imageSrc;
-        popup.style.display = 'block';
-    };
-
-    window.hidePopup = function() {
-        const popup = document.getElementById('popup');
-        popup.style.display = 'none';
-    };
-
-    // Close popup when clicking outside
-    window.onclick = function(event) {
-        const popup = document.getElementById('popup');
-        if (event.target == popup) {
-            popup.style.display = 'none';
-        }
-    };
-
-    // Make removeFavorite function available globally
-    window.removeFavorite = removeFavorite;
 });

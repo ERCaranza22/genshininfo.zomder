@@ -1,148 +1,127 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.getElementById('signupForm');
-    const popup = document.getElementById('popup');
-    const popupMessage = document.getElementById('popupMessage');
-    const popupOkButton = document.getElementById('popupOkButton');
     const loadingOverlay = document.getElementById('loadingOverlay');
-    const loginLink = document.getElementById('loginLink');
+    const notification = document.getElementById('notification');
+    const notificationMessage = document.getElementById('notificationMessage');
 
-    // Check if already logged in
-    checkSession();
-
-    // Handle return URL for login link
-    const params = new URLSearchParams(window.location.search);
-    const returnUrl = params.get('returnUrl');
-    if (returnUrl && loginLink) {
-        loginLink.href = `/login?returnUrl=${encodeURIComponent(returnUrl)}`;
-    }
-
-    async function checkSession() {
-        try {
-            const response = await fetch('/api/session', {
-                credentials: 'include'
-            });
-            const data = await response.json();
-
-            if (data.authenticated) {
-                // If already logged in, redirect to appropriate page
-                const returnUrl = params.get('returnUrl');
-                window.location.href = returnUrl ? decodeURIComponent(returnUrl) : '/';
+    // Handle password visibility toggle
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', () => {
+            const input = button.parentElement.querySelector('input');
+            const icon = button.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
             }
-        } catch (error) {
-            console.error('Error checking session:', error);
-        }
+        });
+    });
+
+    // Show notification
+    function showNotification(message, type = 'error') {
+        notificationMessage.textContent = message;
+        notification.className = `notification show ${type}`;
+        
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 5000);
     }
 
-    function showPopup(message, showOkButton = false) {
-        popupMessage.textContent = message;
-        if (showOkButton) {
-            popupOkButton.style.display = 'inline-block';
-        } else {
-            popupOkButton.style.display = 'none';
-        }
-        popup.classList.add('show');
-        if (!showOkButton) {
-            setTimeout(() => {
-                popup.classList.remove('show');
-            }, 3000);
-        }
-    }
-
-    function showLoading(show) {
+    // Show/hide loading overlay
+    function toggleLoading(show) {
         loadingOverlay.style.display = show ? 'flex' : 'none';
     }
 
-    signupForm.addEventListener('submit', async function(event) {
-        event.preventDefault();
-
-        // Clear previous errors
+    // Clear form errors
+    function clearErrors() {
         document.getElementById('usernameError').textContent = '';
         document.getElementById('emailError').textContent = '';
         document.getElementById('passwordError').textContent = '';
         document.getElementById('confirmPasswordError').textContent = '';
+    }
 
-        let valid = true;
+    // Handle form submission
+    signupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearErrors();
 
-        const username = this.username.value.trim();
-        const email = this.email.value.trim();
-        const password = this.password.value;
-        const confirmPassword = this.confirmPassword.value;
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
 
-        // Validation
-        if (username.length < 3) {
-            document.getElementById('usernameError').textContent = 'Username must be at least 3 characters.';
-            valid = false;
+        // Basic validation
+        let isValid = true;
+
+        if (!username || username.length < 3) {
+            document.getElementById('usernameError').textContent = 'Username must be at least 3 characters long';
+            isValid = false;
         }
 
-        if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-            document.getElementById('emailError').textContent = 'Please enter a valid email address.';
-            valid = false;
+        if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+            document.getElementById('emailError').textContent = 'Please enter a valid email address';
+            isValid = false;
         }
 
-        if (password.length < 6) {
-            document.getElementById('passwordError').textContent = 'Password must be at least 6 characters.';
-            valid = false;
+        if (!password || password.length < 6) {
+            document.getElementById('passwordError').textContent = 'Password must be at least 6 characters long';
+            isValid = false;
         }
 
-        if (confirmPassword !== password) {
-            document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
-            valid = false;
+        if (password !== confirmPassword) {
+            document.getElementById('confirmPasswordError').textContent = 'Passwords do not match';
+            isValid = false;
         }
 
-        if (valid) {
-            showLoading(true);
+        if (!isValid) return;
 
-            try {
-                const response = await fetch('/api/signup', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ 
-                        username: username,
-                        email: email,
-                        password: password 
-                    }),
-                    credentials: 'include'
-                });
+        try {
+            toggleLoading(true);
 
-                const data = await response.json();
+            const response = await fetch('/api/auth/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ username, email, password }),
+                credentials: 'include'
+            });
 
-                if (response.ok) {
-                    // Show success message
-                    showPopup('Sign Up Successful! Redirecting to login...', true);
-                    
-                    // Clear form
-                    this.reset();
+            const data = await response.json();
 
-                    // Set up redirect
-                    popupOkButton.onclick = function() {
-                        popup.classList.remove('show');
-                        const returnUrl = params.get('returnUrl');
-                        window.location.href = `/login?from=signup${returnUrl ? `&returnUrl=${encodeURIComponent(returnUrl)}` : ''}`;
-                    };
-
-                    // Auto redirect after 2 seconds if user doesn't click OK
-                    setTimeout(() => {
-                        const returnUrl = params.get('returnUrl');
-                        window.location.href = `/login?from=signup${returnUrl ? `&returnUrl=${encodeURIComponent(returnUrl)}` : ''}`;
-                    }, 2000);
-                } else {
-                    throw new Error(data.message || 'Signup failed');
-                }
-            } catch (error) {
-                console.error('Signup error:', error);
+            if (response.ok) {
+                showNotification('Account created successfully! Redirecting to login...', 'success');
                 
-                if (error.message.includes('Username already exists')) {
-                    document.getElementById('usernameError').textContent = 'Username is already taken.';
-                } else if (error.message.includes('Email already registered')) {
-                    document.getElementById('emailError').textContent = 'Email is already registered.';
+                // Get return URL from query parameters
+                const params = new URLSearchParams(window.location.search);
+                const returnUrl = params.get('returnUrl');
+                
+                // Redirect to login page after a short delay
+                setTimeout(() => {
+                    window.location.href = `login.html${returnUrl ? `?returnUrl=${encodeURIComponent(returnUrl)}` : ''}`;
+                }, 1500);
+            } else {
+                if (data.errors) {
+                    data.errors.forEach(error => {
+                        const field = error.param;
+                        const message = error.msg;
+                        document.getElementById(`${field}Error`).textContent = message;
+                    });
                 } else {
-                    showPopup(error.message || 'An error occurred during signup. Please try again.');
+                    showNotification(data.message || 'Sign up failed');
                 }
-            } finally {
-                showLoading(false);
             }
+        } catch (error) {
+            console.error('Signup error:', error);
+            showNotification('An error occurred. Please try again later.');
+        } finally {
+            toggleLoading(false);
         }
     });
-});
+}); 
