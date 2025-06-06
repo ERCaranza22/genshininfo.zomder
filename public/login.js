@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const popupOkButton = document.getElementById('popupOkButton');
     
     // Check if user is already logged in
-    if (auth.isAuthenticated()) {
+    if (localStorage.getItem('isAuthenticated') === 'true') {
         window.location.href = 'index.html';
         return;
     }
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Handle form submission
     loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault(); // Prevent form submission
+        e.preventDefault();
         
         // Clear previous errors
         clearErrors();
@@ -37,35 +37,34 @@ document.addEventListener('DOMContentLoaded', () => {
         loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
         
         try {
-            // Get form data
-            const formData = {
-                usernameOrEmail: usernameOrEmail.value.trim(),
-                password: password.value,
-                rememberMe: document.getElementById('rememberMe').checked
-            };
-            
-            // Remember username/email if "remember me" is checked
-            if (formData.rememberMe) {
-                localStorage.setItem('rememberedUser', formData.usernameOrEmail);
-            } else {
-                localStorage.removeItem('rememberedUser');
-            }
+            // For demo purposes - replace with your actual authentication
+            if (usernameOrEmail.value === 'test' && password.value === 'test123') {
+                // Set authentication state
+                localStorage.setItem('isAuthenticated', 'true');
+                localStorage.setItem('currentUser', JSON.stringify({
+                    username: 'test',
+                    email: 'test@example.com'
+                }));
+                
+                // Handle remember me
+                const rememberMe = document.getElementById('rememberMe').checked;
+                if (rememberMe) {
+                    localStorage.setItem('rememberedUser', usernameOrEmail.value);
+                } else {
+                    localStorage.removeItem('rememberedUser');
+                }
 
-            // Call auth.login function
-            const success = await auth.login(formData);
-            
-            if (success) {
                 showPopupMessage('Login successful! Redirecting...', false);
                 setTimeout(() => {
                     window.location.href = 'index.html';
                 }, 1500);
+            } else {
+                throw new Error('Invalid username or password');
             }
         } catch (error) {
             showPopupMessage(error.message || 'Login failed. Please try again.', true);
-            // Clear password field on error
             password.value = '';
         } finally {
-            // Re-enable login button
             loginButton.disabled = false;
             loginButton.innerHTML = 'Login';
         }
