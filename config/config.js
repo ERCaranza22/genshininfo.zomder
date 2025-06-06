@@ -1,8 +1,7 @@
-const localMongoURI = 'mongodb://127.0.0.1:27017/genshininfo';
+require('dotenv').config();
 
 module.exports = {
     port: process.env.PORT || 3000,
-    mongoURI: process.env.MONGO_URI || localMongoURI,
-    sessionSecret: process.env.SESSION_SECRET || 'a',
-    env: process.env.NODE_ENV || 'development'
+    mongoURI: process.env.MONGODB_URI || 'mongodb://localhost:27017/genshin_info',
+    sessionSecret: process.env.SESSION_SECRET || 'your-secret-key'
 };
