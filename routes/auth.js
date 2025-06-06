@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcrypt');
+const User = require('../models/User');
 const rateLimit = require('express-rate-limit');
-const User = require('../model/user');
 const checkDatabaseConnection = require('../middleware/database');
-const { isAuthenticated } = require('../middleware/auth');
 
 // Rate limiting for auth endpoints
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 5, // limit each IP to 5 requests per windowMs
+    max: 100, // limit each IP to 100 requests per windowMs for testing
     message: 'Too many login attempts, please try again later'
 });
 
@@ -25,23 +25,17 @@ router.post('/signup', async (req, res) => {
     }
 
     try {
-        // Check for existing username
-        const existingUsername = await User.findOne({ username });
-        if (existingUsername) {
-            return res.status(409).json({ message: 'Username already exists' });
+        const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+        if (existingUser) {
+            return res.status(409).json({ message: 'User already exists' });
         }
 
-        // Check for existing email
-        const existingEmail = await User.findOne({ email });
-        if (existingEmail) {
-            return res.status(409).json({ message: 'Email already registered' });
-        }
-
-        const newUser = new User({ username, email, password, favorites: [] });
+        const newUser = new User({ username, email, password });
         await newUser.save();
 
         res.status(201).json({ message: 'User created successfully' });
     } catch (err) {
+        console.error('Signup error:', err);
         res.status(500).json({ message: 'Server error', error: err.message });
     }
 });
@@ -51,190 +45,73 @@ router.post('/login', async (req, res) => {
     try {
         const { usernameOrEmail, password } = req.body;
 
-        if (!usernameOrEmail || !password) {
-            return res.status(400).json({ 
-                message: 'Missing required fields', 
-                error: 'Please provide both username/email and password' 
-            });
-        }
-
+        // Find user by username or email
         const user = await User.findOne({
-            $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }]
-        }).select('+password'); // Explicitly include password field for comparison
+            $or: [
+                { username: usernameOrEmail },
+                { email: usernameOrEmail }
+            ]
+        });
 
         if (!user) {
-            return res.status(401).json({ 
-                message: 'Invalid credentials', 
-                error: 'Invalid username/email or password' 
-            });
+            return res.status(401).json({ message: 'Invalid credentials' });
         }
 
-        const isMatch = await user.comparePassword(password);
-        if (!isMatch) {
-            return res.status(401).json({ 
-                message: 'Invalid credentials', 
-                error: 'Invalid username/email or password' 
-            });
+        // Check password
+        const validPassword = await bcrypt.compare(password, user.password);
+        if (!validPassword) {
+            return res.status(401).json({ message: 'Invalid credentials' });
         }
 
-        // Set user session
-        req.session.user = {
-            id: user._id,
+        // Set session data
+        req.session.userId = user._id;
+        req.session.username = user.username;
+
+        // Send success response with user data (excluding password)
+        const userData = {
+            _id: user._id,
             username: user.username,
             email: user.email
         };
 
-        res.status(200).json({ 
-            message: 'Login successful', 
-            user: { username: user.username, email: user.email }
+        res.json({
+            message: 'Login successful',
+            user: userData
         });
-    } catch (err) {
-        console.error('Login error:', err);
-        res.status(500).json({ 
-            message: 'Server error', 
-            error: 'An unexpected error occurred during login' 
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ message: 'Server error during login' });
+    }
+});
+
+// Session check route
+router.get('/session', (req, res) => {
+    if (req.session && req.session.userId) {
+        // Session exists and is valid
+        res.json({
+            authenticated: true,
+            user: {
+                _id: req.session.userId,
+                username: req.session.username
+            }
+        });
+    } else {
+        // No valid session
+        res.json({
+            authenticated: false
         });
     }
 });
 
-// Add logout endpoint
+// Logout route
 router.post('/logout', (req, res) => {
     req.session.destroy((err) => {
         if (err) {
-            return res.status(500).json({ message: 'Could not log out' });
+            return res.status(500).json({ message: 'Error during logout' });
         }
         res.clearCookie('connect.sid');
-        res.status(200).json({ message: 'Logged out successfully' });
+        res.json({ message: 'Logged out successfully' });
     });
-});
-
-// Check session status and return user data including favorites
-router.get('/session', async (req, res) => {
-    if (req.session && req.session.user) {
-        try {
-            const user = await User.findById(req.session.user.id);
-            if (user) {
-                res.status(200).json({ 
-                    authenticated: true, 
-                    user: {
-                        username: user.username,
-                        email: user.email,
-                        favorites: user.favorites
-                    }
-                });
-            } else {
-                req.session.destroy();
-                res.status(200).json({ authenticated: false });
-            }
-        } catch (err) {
-            console.error('Session check error:', err);
-            res.status(500).json({ message: 'Error checking session' });
-        }
-    } else {
-        res.status(200).json({ authenticated: false });
-    }
-});
-
-// Following-related endpoints
-router.get('/following', isAuthenticated, async (req, res) => {
-    try {
-        const user = await User.findById(req.session.user.id).populate('following', 'username');
-        res.json({ following: user.following });
-    } catch (err) {
-        res.status(500).json({ message: 'Error fetching following list', error: err.message });
-    }
-});
-
-router.post('/follow/:userId', isAuthenticated, async (req, res) => {
-    try {
-        const userToFollow = await User.findById(req.params.userId);
-        if (!userToFollow) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        const user = await User.findById(req.session.user.id);
-        if (user.following.includes(req.params.userId)) {
-            return res.status(400).json({ message: 'Already following this user' });
-        }
-
-        user.following.push(req.params.userId);
-        await user.save();
-
-        res.json({ success: true, message: 'Successfully followed user' });
-    } catch (err) {
-        res.status(500).json({ message: 'Error following user', error: err.message });
-    }
-});
-
-router.post('/unfollow/:userId', isAuthenticated, async (req, res) => {
-    try {
-        const user = await User.findById(req.session.user.id);
-        const followingIndex = user.following.indexOf(req.params.userId);
-        
-        if (followingIndex === -1) {
-            return res.status(400).json({ message: 'Not following this user' });
-        }
-
-        user.following.splice(followingIndex, 1);
-        await user.save();
-
-        res.json({ success: true, message: 'Successfully unfollowed user' });
-    } catch (err) {
-        res.status(500).json({ message: 'Error unfollowing user', error: err.message });
-    }
-});
-
-// Get user's favorites
-router.get('/favorites', isAuthenticated, async (req, res) => {
-    try {
-        const user = await User.findById(req.session.user.id);
-        res.json({ favorites: user.favorites });
-    } catch (err) {
-        res.status(500).json({ message: 'Error fetching favorites' });
-    }
-});
-
-// Add favorite
-router.post('/favorites/add', isAuthenticated, async (req, res) => {
-    const { character } = req.body;
-    if (!character) {
-        return res.status(400).json({ message: 'Character name required' });
-    }
-
-    try {
-        const user = await User.findById(req.session.user.id);
-        if (user.favorites.includes(character)) {
-            return res.status(400).json({ message: 'Character already in favorites' });
-        }
-
-        user.favorites.push(character);
-        await user.save();
-        res.json({ message: 'Character added to favorites', favorites: user.favorites });
-    } catch (err) {
-        res.status(500).json({ message: 'Error adding favorite' });
-    }
-});
-
-// Remove favorite
-router.post('/favorites/remove', isAuthenticated, async (req, res) => {
-    const { character } = req.body;
-    if (!character) {
-        return res.status(400).json({ message: 'Character name required' });
-    }
-
-    try {
-        const user = await User.findById(req.session.user.id);
-        const index = user.favorites.indexOf(character);
-        if (index === -1) {
-            return res.status(400).json({ message: 'Character not in favorites' });
-        }
-
-        user.favorites.splice(index, 1);
-        await user.save();
-        res.json({ message: 'Character removed from favorites', favorites: user.favorites });
-    } catch (err) {
-        res.status(500).json({ message: 'Error removing favorite' });
-    }
 });
 
 module.exports = router;

@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const UserCharacter = require('../model/userCharacter');
-const { isAuthenticated } = require('../middleware/auth');
 
 // Get all characters for the logged-in user
 router.get('/', isAuthenticated, async (req, res) => {
