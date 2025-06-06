@@ -21,7 +21,6 @@
         <li><a href="favorites.html">Favorites</a></li>
         <li><a href="login.html" id="login-link">
             <img src="assets/icons/user-icon.png" alt="Login" class="nav-icon">
-            <span id="username-display"></span>
         </a></li>
     </ul>
 </nav>
@@ -33,7 +32,175 @@
 
 <!-- Characters Grid Section -->
 <section class="characters-grid" id="characters-grid">
-    <!-- Character cards will be dynamically loaded here -->
+    <!-- Character Card: Albedo -->
+    <div class="card_albedo">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Albedo_Icon.png" alt="Albedo">
+                <img class="element-icon" src="assets/elements/geo-element.png" alt="Geo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Albedo</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Sword</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Albedo.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Character Card: Amber -->
+    <div class="card_amber">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Amber_Icon.png" alt="Amber">
+                <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Amber</h2>
+                <div class="five-stars">⭐⭐⭐⭐</div>
+                <p>Weapon: Bow</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Amber.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Character Card: Arlecchino -->
+    <div class="card_arlecchino">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Arlecchino_Icon.png" alt="Arlecchino">
+                <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Arlecchino</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Polearm</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Arlecchino.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Character Card: Bennett -->
+    <div class="card_bennett">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Bennett_Icon.png" alt="Bennett">
+                <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Bennett</h2>
+                <div class="five-stars">⭐⭐⭐⭐</div>
+                <p>Weapon: Sword</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Bennett.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Character Card: Diluc -->
+    <div class="card_diluc">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Diluc_Icon.png" alt="Diluc">
+                <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Diluc</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Claymore</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Diluc.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Character Card: Diona -->
+    <div class="card_diona">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Diona_Icon.png" alt="Diona">
+                <img class="element-icon" src="assets/elements/cryo-element.png" alt="Cryo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Diona</h2>
+                <div class="five-stars">⭐⭐⭐⭐</div>
+                <p>Weapon: Bow</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Diona.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Character Card: Eula -->
+    <div class="card_eula">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Eula_Icon.png" alt="Eula">
+                <img class="element-icon" src="assets/elements/cryo-element.png" alt="Cryo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Eula</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Claymore</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Eula.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Character Card: Fischl -->
+    <div class="card_fischl">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Fischl_Icon.png" alt="Fischl">
+                <img class="element-icon" src="assets/elements/electro-element.png" alt="Electro">
+            </div>
+            <div class="character-info hidden">
+                <h2>Fischl</h2>
+                <div class="five-stars">⭐⭐⭐⭐</div>
+                <p>Weapon: Bow</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Fischl.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Character Card: Ganyu -->
+    <div class="card_ganyu">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/Ganyu_Icon.png" alt="Ganyu">
+                <img class="element-icon" src="assets/elements/cryo-element.png" alt="Cryo">
+            </div>
+            <div class="character-info hidden">
+                <h2>Ganyu</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Bow</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/Ganyu.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Character Card: HuTao -->
+    <div class="card_hutao">
+        <div class="character-card">
+            <div class="image-container" onclick="toggleInfo(this)">
+                <img class="character-img" src="assets/characters/icon/HuTao_Icon.png" alt="HuTao">
+                <img class="element-icon" src="assets/elements/pyro-element.png" alt="Pyro">
+            </div>
+            <div class="character-info hidden">
+                <h2>HuTao</h2>
+                <div class="five-stars">⭐⭐⭐⭐⭐</div>
+                <p>Weapon: Polearm</p>
+                <button onclick="showPopup(event, 'assets/characters/wish/HuTao.png')">Full Image</button>
+                <button class="favorite-button">❤️</button>
+            </div>
+        </div>
+    </div>
 </section>
 
 <!-- Image Popup -->
@@ -49,8 +216,9 @@
 </div>
 
 <!-- Scripts -->
-<script src="api.js"></script>
 <script src="index.js"></script>
 
+</body>
+</html>
 </body>
 </html>
