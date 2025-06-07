@@ -1,52 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const charactersGrid = document.getElementById('characters-grid');
     const loadingIndicator = document.getElementById('loadingIndicator');
-    const loginLink = document.getElementById('login-link');
-    const usernameDisplay = document.getElementById('username-display');
     const imagePopup = document.getElementById('imagePopup');
     const popupImage = document.getElementById('popupImage');
     const closePopup = document.querySelector('.close-popup');
-
-    let currentUser = null;
-
-    // Check authentication status
-    async function checkAuth() {
-        try {
-            const response = await api.auth.checkSession();
-            currentUser = response.user;
-            updateAuthUI();
-        } catch (error) {
-            console.error('Auth check failed:', error);
-            currentUser = null;
-            updateAuthUI();
-        }
-    }
-
-    // Update UI based on auth status
-    function updateAuthUI() {
-        if (currentUser) {
-            loginLink.href = '#';
-            loginLink.onclick = handleLogout;
-            usernameDisplay.textContent = currentUser.username;
-        } else {
-            loginLink.href = 'login.html';
-            loginLink.onclick = null;
-            usernameDisplay.textContent = '';
-        }
-    }
-
-    // Handle logout
-    async function handleLogout(e) {
-        e.preventDefault();
-        try {
-            await api.auth.logout();
-            currentUser = null;
-            updateAuthUI();
-            window.location.href = 'login.html';
-        } catch (error) {
-            console.error('Logout failed:', error);
-        }
-    }
 
     // Load characters
     async function loadCharacters() {
@@ -55,24 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/api/characters');
             const characters = await response.json();
             
-            // Get user's favorites if logged in
-            let favorites = [];
-            if (currentUser) {
-                try {
-                    const favResponse = await api.favorites.getFavorites();
-                    favorites = favResponse.favorites || [];
-                } catch (error) {
-                    console.error('Failed to load favorites:', error);
-                }
-            }
-
             // Clear existing content
             charactersGrid.innerHTML = '';
 
             // Create character cards
             characters.forEach(character => {
-                const isFavorite = favorites.includes(character.id);
-                const card = createCharacterCard(character, isFavorite);
+                const card = createCharacterCard(character);
                 charactersGrid.appendChild(card);
             });
 
@@ -85,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Create character card
-    function createCharacterCard(character, isFavorite) {
+    function createCharacterCard(character) {
         const cardDiv = document.createElement('div');
         cardDiv.className = `card_${character.name.toLowerCase()}`;
         
@@ -100,36 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="five-stars">${'⭐'.repeat(character.rarity)}</div>
                     <p>Weapon: ${character.weapon}</p>
                     <button onclick="showPopup(event, '${character.wishArtPath}')">Full Image</button>
-                    <button class="favorite-button ${isFavorite ? 'active' : ''}" data-character-id="${character.id}">
-                        ${isFavorite ? '❤️' : '🤍'}
-                    </button>
                 </div>
             </div>
         `;
 
-        // Add favorite button handler
-        const favoriteButton = cardDiv.querySelector('.favorite-button');
-        favoriteButton.addEventListener('click', async (e) => {
-            e.stopPropagation();
-            if (!currentUser) {
-                window.location.href = 'login.html';
-                return;
-            }
-
-            try {
-                const characterId = favoriteButton.dataset.characterId;
-                if (favoriteButton.classList.contains('active')) {
-                    await api.favorites.removeFavorite(characterId);
-                    favoriteButton.classList.remove('active');
-                    favoriteButton.textContent = '🤍';
-                } else {
-                    await api.favorites.addFavorite(characterId);
-                    favoriteButton.classList.add('active');
-                    favoriteButton.textContent = '❤️';
-                }
-            } catch (error) {
-                console.error('Failed to update favorite:', error);
-            }
+        // Toggle character info
+        const info = cardDiv.querySelector('.character-info');
+        info.addEventListener('click', () => {
+            info.classList.toggle('hidden');
         });
 
         return cardDiv;
@@ -161,6 +84,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Initialize
-    checkAuth();
     loadCharacters();
 }); 
