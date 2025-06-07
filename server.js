@@ -7,11 +7,13 @@ const open = require('open');
 
 // Import configuration
 const config = require('./config/config');
+const PORT = process.env.PORT || config.port || 5000;
 
 // Import routes
 const pageRoutes = require('./routes/pages');
 const characterRoutes = require('./routes/characters');
 const authRoutes = require('./routes/auth');
+const favoriteRoutes = require('./routes/favorites');
 
 const app = express();
 
@@ -32,50 +34,59 @@ app.use((req, res, next) => {
     next();
 });
 
-// Serve index.html as the main page
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// Mount API routes first
+app.use('/api/auth', authRoutes);
+app.use('/api/characters', characterRoutes);
+app.use('/api/favorites', favoriteRoutes);
 
-// Serve static files (except HTML)
-app.use(express.static(path.join(__dirname, 'public'), {
-    index: 'index.html', // Set index.html as the default file
-    extensions: ['js', 'css', 'png', 'jpg', 'gif', 'ico', 'svg']
+// Serve static files from the public directory
+app.use(express.static('public', {
+    extensions: ['html', 'js', 'css']
 }));
 
-// Mount routes
-app.use('/api/auth', authRoutes); // Auth routes
-app.use('/api/characters', characterRoutes); // API routes
-app.use('/', pageRoutes); // HTML routes last
-
-// Handle 404s
-app.use((req, res) => {
-    if (req.path.endsWith('.html')) {
-        res.status(404).send('Page not found');
-    } else {
-        res.status(404).json({ message: 'Not found' });
-    }
-});
+// Use page routes for HTML files
+app.use('/', pageRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ 
+        message: 'Internal Server Error',
+        error: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
 });
+
+// MongoDB connection handler
+const connectDB = async () => {
+    try {
+        await mongoose.connect(config.mongoURI, {
+            dbName: 'genshin_info'
+        });
+        console.log('\x1b[32m%s\x1b[0m', '✓ MongoDB Connected Successfully');
+        return true;
+    } catch (error) {
+        console.error('\x1b[31m%s\x1b[0m', '✗ MongoDB Connection Error:', error.message);
+        return false;
+    }
+};
 
 // Start server function
 const startServer = async () => {
     try {
-        // Connect to MongoDB
-        await mongoose.connect(config.mongoURI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
-        console.log('\x1b[32m%s\x1b[0m', '✓ MongoDB Connected Successfully');
+        // Try to connect to MongoDB
+        const isConnected = await connectDB();
+        if (!isConnected) {
+            console.log('\x1b[33m%s\x1b[0m', 'ℹ Retrying MongoDB connection in 5 seconds...');
+            await new Promise(resolve => setTimeout(resolve, 5000));
+            const retryConnection = await connectDB();
+            if (!retryConnection) {
+                throw new Error('Failed to connect to MongoDB after retry');
+            }
+        }
 
         // Start the server
-        const server = app.listen(config.port, '0.0.0.0', () => {
-            const url = `http://localhost:${config.port}`;
+        const server = app.listen(PORT, () => {
+            const url = `http://localhost:${PORT}`;
             console.log('\x1b[36m%s\x1b[0m', `✓ Server running on ${url}`);
             
             // Open browser after a short delay
@@ -90,7 +101,7 @@ const startServer = async () => {
         });
 
         // Handle server shutdown
-        process.on('SIGINT', async () => {
+        const gracefulShutdown = async () => {
             try {
                 await mongoose.connection.close();
                 server.close();
@@ -100,7 +111,12 @@ const startServer = async () => {
                 console.error('\x1b[31m%s\x1b[0m', '✗ Error during shutdown:', err);
                 process.exit(1);
             }
-        });
+        };
+
+        // Handle various shutdown signals
+        process.on('SIGINT', gracefulShutdown);
+        process.on('SIGTERM', gracefulShutdown);
+        process.on('SIGUSR2', gracefulShutdown); // For nodemon restart
 
     } catch (error) {
         console.error('\x1b[31m%s\x1b[0m', '✗ Error starting server:', error);
