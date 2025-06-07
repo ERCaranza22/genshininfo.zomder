@@ -60,7 +60,8 @@ app.use((err, req, res, next) => {
 const connectDB = async () => {
     try {
         await mongoose.connect(config.mongoURI, {
-            dbName: 'genshin_info'
+            dbName: 'genshin_info',
+            ...config.mongoOptions
         });
         console.log('\x1b[32m%s\x1b[0m', '✓ MongoDB Connected Successfully');
         return true;
