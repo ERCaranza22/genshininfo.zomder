@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('email').value;
+            const identifier = document.getElementById('identifier').value;
             const password = document.getElementById('password').value;
 
             try {
@@ -15,19 +15,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ identifier, password })
                 });
 
                 const data = await response.json();
 
                 if (response.ok) {
+                    localStorage.setItem('user', JSON.stringify(data.user));
                     localStorage.setItem('token', data.token);
-                    window.location.href = '/';
+                    
+                    const redirectUrl = sessionStorage.getItem('redirectUrl') || 'index.html';
+                    sessionStorage.removeItem('redirectUrl');
+                    window.location.href = redirectUrl;
                 } else {
-                    errorMessage.textContent = data.message || 'Login failed';
+                    errorMessage.textContent = data.message || 'Login failed. Please try again.';
                 }
             } catch (error) {
-                errorMessage.textContent = 'An error occurred. Please try again.';
+                console.error('Login error:', error);
+                errorMessage.textContent = 'An error occurred. Please try again later.';
             }
         });
     }
@@ -57,8 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (response.ok) {
+                    localStorage.setItem('user', JSON.stringify(data.user));
                     localStorage.setItem('token', data.token);
-                    window.location.href = '/';
+                    window.location.href = 'index.html';
                 } else {
                     errorMessage.textContent = data.message || 'Signup failed';
                 }

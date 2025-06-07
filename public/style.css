@@ -43,9 +43,9 @@ body.no-scroll {
     transition: background-color 0.2s ease;
 }
 
-.nav-links li a:hover,
-.nav-links li a.active {
-    background-color: #0e2e4a;
+.nav-links li a:hover {
+    background-color: #3ded97;
+    color: #000000;
 }
 
 .nav-icon {
@@ -200,7 +200,7 @@ body.no-scroll {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.9);
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -209,22 +209,42 @@ body.no-scroll {
 .popup-content {
     position: relative;
     max-width: 90%;
-    max-height: 90%;
+    max-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.popup-img {
+#popupImage {
     max-width: 100%;
     max-height: 90vh;
     object-fit: contain;
+    border-radius: 8px;
+    border: 2px solid #3ded97;
+    background-color: #2b2b2b;
 }
 
-.close-btn {
+.close-popup {
     position: absolute;
-    top: -40px;
-    right: 0;
+    top: 10px;
+    right: 10px;
     color: white;
-    font-size: 30px;
+    font-size: 28px;
     cursor: pointer;
+    background: rgba(0, 0, 0, 0.6);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    z-index: 1001;
+}
+
+.close-popup:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: scale(1.1);
 }
 
 /* Loading Indicator */
@@ -295,6 +315,34 @@ body.no-scroll {
     }
 }
 
+/* Favorite Message Popup */
+#favorite-message {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background-color: #333;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 2000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    min-width: 200px;
+    pointer-events: none;
+}
+
+#favorite-message.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+#favorite-message.error {
+    background-color: #dc3545;
+}
 
 /* Animation for removing cards in favorites page */
 .character-card {
@@ -327,7 +375,8 @@ body.no-scroll {
     display: flex;
     align-items: center;
     gap: 5px;
-    padding: 8px 15px;
+    padding: 28px;
+    margin-right: 20px;
     border-radius: 20px;
     background-color: #4a90e2;
     color: white !important;
@@ -336,8 +385,4 @@ body.no-scroll {
 
 .login-link:hover {
     background-color: #357abd;
-}
-
-.login-link i {
-    font-size: 16px;
 }

@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Favorites - Genshin Impact</title>
+    <title>Favorites - Genshin Impact Character Viewer</title>
     <link rel="stylesheet" href="style.css" type="text/css"/>
+    <link rel="stylesheet" href="auth.css" type="text/css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <style>
         .no-favorites {
@@ -34,24 +35,23 @@
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-left">
-            <a href="index.html">
-                <img class="site-title" src="assets/GenshinImpact/GenshinImpact_Logo.png" height="80" width="250" alt="Genshin Impact">
-            </a>
+            <img class="site-title" src="assets/GenshinImpact/GenshinImpact_Logo.png" height="80" width="250" alt="Genshin Impact">
         </div>
         <ul class="nav-links">
             <li><a href="index.html">Characters</a></li>
             <li><a href="favorites.html" class="active">Favorites</a></li>
+            <li><a href="login.html" class="login-link"><i class="fas fa-user"></i> Login</a></li>
         </ul>
     </nav>
 
-    <!-- Favorites Title Section -->
+    <!-- Favorites Title -->
     <section class="title-section">
         <h1>Your Favorite Characters</h1>
     </section>
 
     <!-- Favorites Grid -->
     <section class="characters-grid" id="favorites-grid">
-        <!-- Favorite characters will be loaded here -->
+        <!-- Favorites will be loaded here dynamically -->
     </section>
 
     <!-- No Favorites Message -->
@@ -60,18 +60,19 @@
         <a href="index.html" class="browse-link">Browse Characters</a>
     </div>
 
-    <!-- Popup Modal -->
-    <div id="popup" class="popup">
+    <!-- Image Popup -->
+    <div id="imagePopup" class="popup">
         <div class="popup-content">
-            <span class="close">&times;</span>
-            <img id="popup-image" src="" alt="Character Image">
+            <img id="popupImage" src="" alt="Character Full Image">
+            <span class="close-popup">&times;</span>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="favorites.js"></script>
+    <!-- Favorite Message Popup -->
+    <div id="favorite-message"></div>
 
-    <!-- Favorite toggle message popup -->
-    <div id="favorite-message" class="favorite-message"></div>
+    <!-- Scripts -->
+    <script src="auth-utils.js"></script>
+    <script src="favorites.js"></script>
 </body>
 </html>
