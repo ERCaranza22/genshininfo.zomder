@@ -15,6 +15,8 @@ const characterRoutes = require('./routes/characters');
 const authRoutes = require('./routes/auth');
 const favoriteRoutes = require('./routes/favorites');
 
+
+
 const app = express();
 
 // Middleware
