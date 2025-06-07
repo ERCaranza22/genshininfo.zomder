@@ -1,104 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - Genshin Impact Info</title>
-    <link rel="stylesheet" href="signup.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign Up - Genshin Info</title>
+    <link rel="stylesheet" href="signup.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="auth-box">
-            <h1>Create Account</h1>
-            <p class="subtitle">Join our community today</p>
 
-            <form id="signupForm">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input 
-                        type="text" 
-                        id="username" 
-                        name="username" 
-                        required 
-                        minlength="3"
-                        autocomplete="username"
-                        placeholder="Choose a username"
-                    >
-                    <span class="error" id="usernameError"></span>
-                </div>
+    <section class="form-section">
+        <h1>Sign Up</h1>
+        <form id="signupForm" novalidate>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Choose a username" required />
 
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        required 
-                        autocomplete="email"
-                        placeholder="Enter your email"
-                    >
-                    <span class="error" id="emailError"></span>
-                </div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required />
 
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <div class="password-input">
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password" 
-                            required 
-                            minlength="6"
-                            autocomplete="new-password"
-                            placeholder="Create a password"
-                        >
-                        <button type="button" class="toggle-password" aria-label="Toggle password visibility">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                    <span class="error" id="passwordError"></span>
-                </div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Create a password" required />
 
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password</label>
-                    <div class="password-input">
-                        <input 
-                            type="password" 
-                            id="confirmPassword" 
-                            name="confirmPassword" 
-                            required 
-                            minlength="6"
-                            autocomplete="new-password"
-                            placeholder="Confirm your password"
-                        >
-                        <button type="button" class="toggle-password" aria-label="Toggle password visibility">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                    <span class="error" id="confirmPasswordError"></span>
-                </div>
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required />
 
-                <button type="submit" class="btn-primary">Sign Up</button>
-            </form>
+            <button type="submit">Sign Up</button>
+        </form>
+        <p class="switch-page">Already have an account? <a href="login.html">Login here</a></p>
+    </section>
 
-            <p class="auth-links">
-                Already have an account? <a href="login.html">Log In</a>
-            </p>
-        </div>
-    </div>
-
-    <!-- Loading overlay -->
-    <div id="loadingOverlay" class="loading-overlay">
-        <div class="loading-spinner"></div>
-        <div class="loading-text">Creating your account...</div>
-    </div>
-
-    <!-- Notification popup -->
-    <div id="notification" class="notification">
-        <span id="notificationMessage"></span>
-    </div>
-
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="signup.js"></script>
 </body>
 </html>
