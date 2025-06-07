@@ -1,24 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const { isAuthenticated, isNotAuthenticated } = require('../middleware/auth');
 
-// Public routes
-router.get('/', (req, res) => {
+// Serve main pages
+router.get(['/', '/index', '/index.html'], (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
-// Protected routes
-router.get('/favourites', isAuthenticated, (req, res) => {
+router.get('/favorites.html', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'favorites.html'));
 });
 
-// Authentication routes (only accessible when not logged in)
-router.get('/login', isNotAuthenticated, (req, res) => {
+// Authentication pages
+router.get('/login.html', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'login.html'));
 });
 
-router.get('/signup', isNotAuthenticated, (req, res) => {
+router.get('/signup.html', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'signup.html'));
 });
 
