@@ -1,60 +1,83 @@
 const express = require('express');
 const router = express.Router();
-const UserCharacter = require('../models/UserCharacter');
-const { isAuthenticated } = require('../middleware/auth');
+const Character = require('../models/Character');
 
-// Get all characters for the logged-in user
-router.get('/', isAuthenticated, async (req, res) => {
+// Get all characters
+router.get('/', async (req, res) => {
     try {
-        const characters = await UserCharacter.find({ userId: req.session.user.id });
-        res.json({ characters });
-    } catch (err) {
-        res.status(500).json({ message: 'Error fetching characters', error: err.message });
+        const characters = await Character.find();
+        res.json(characters);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 });
 
-// Add a new character for the logged-in user
-router.post('/add', isAuthenticated, async (req, res) => {
-    const { characterName } = req.body;
-    if (!characterName) {
-        return res.status(400).json({ message: 'Character name is required' });
-    }
-
+// Get a single character
+router.get('/:id', async (req, res) => {
     try {
-        // Check if character already exists for user
-        const existing = await UserCharacter.findOne({ userId: req.session.user.id, characterName });
-        if (existing) {
-            return res.status(400).json({ message: 'Character already added' });
+        const character = await Character.findById(req.params.id);
+        if (character) {
+            res.json(character);
+        } else {
+            res.status(404).json({ message: 'Character not found' });
         }
-
-        const newCharacter = new UserCharacter({
-            userId: req.session.user.id,
-            characterName
-        });
-        await newCharacter.save();
-
-        res.json({ message: 'Character added successfully', character: newCharacter });
-    } catch (err) {
-        res.status(500).json({ message: 'Error adding character', error: err.message });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 });
 
-// Remove a character for the logged-in user
-router.post('/remove', isAuthenticated, async (req, res) => {
-    const { characterName } = req.body;
-    if (!characterName) {
-        return res.status(400).json({ message: 'Character name is required' });
-    }
+// Create a new character
+router.post('/', async (req, res) => {
+    const character = new Character({
+        name: req.body.name,
+        vision: req.body.vision,
+        weapon: req.body.weapon,
+        rarity: req.body.rarity,
+        description: req.body.description,
+        imageUrl: req.body.imageUrl
+    });
 
     try {
-        const deleted = await UserCharacter.findOneAndDelete({ userId: req.session.user.id, characterName });
-        if (!deleted) {
+        const newCharacter = await character.save();
+        res.status(201).json(newCharacter);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
+
+// Update a character
+router.patch('/:id', async (req, res) => {
+    try {
+        const character = await Character.findById(req.params.id);
+        if (!character) {
             return res.status(404).json({ message: 'Character not found' });
         }
 
-        res.json({ message: 'Character removed successfully' });
-    } catch (err) {
-        res.status(500).json({ message: 'Error removing character', error: err.message });
+        if (req.body.name) character.name = req.body.name;
+        if (req.body.vision) character.vision = req.body.vision;
+        if (req.body.weapon) character.weapon = req.body.weapon;
+        if (req.body.rarity) character.rarity = req.body.rarity;
+        if (req.body.description) character.description = req.body.description;
+        if (req.body.imageUrl) character.imageUrl = req.body.imageUrl;
+
+        const updatedCharacter = await character.save();
+        res.json(updatedCharacter);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
+
+// Delete a character
+router.delete('/:id', async (req, res) => {
+    try {
+        const character = await Character.findById(req.params.id);
+        if (!character) {
+            return res.status(404).json({ message: 'Character not found' });
+        }
+        await character.deleteOne();
+        res.json({ message: 'Character deleted' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 });
 
