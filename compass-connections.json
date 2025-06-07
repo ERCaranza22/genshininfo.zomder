@@ -16,7 +16,7 @@
       },
       "savedConnectionType": "recent",
       "connectionOptions": {
-        "connectionString": "mongodb://localhost:27017/genshin",
+        "connectionString": "mongodb+srv://errolrensellecaranza:<m4A1TFZkAMyHdABx>@cluster0.0qwfe6z.mongodb.net/genshin_info",
         "oidc": {
           "serializedState": "eyJvaWRjUGx1Z2luU3RhdGVWZXJzaW9uIjowLCJzdGF0ZSI6W119"
         }
