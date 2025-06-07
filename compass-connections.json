@@ -16,7 +16,7 @@
       },
       "savedConnectionType": "recent",
       "connectionOptions": {
-        "connectionString": "mongodb://localhost:27017/",
+        "connectionString": "mongodb://localhost:27017/genshin",
         "oidc": {
           "serializedState": "eyJvaWRjUGx1Z2luU3RhdGVWZXJzaW9uIjowLCJzdGF0ZSI6W119"
         }
