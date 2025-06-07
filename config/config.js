@@ -1,7 +1,4 @@
-require('dotenv').config();
-
 module.exports = {
-    port: process.env.PORT || 3000,
-    mongoURI: process.env.MONGODB_URI || 'mongodb://localhost:27017/genshin_info',
-    sessionSecret: process.env.SESSION_SECRET || 'your-secret-key'
-};
+    port: 3000,
+    mongoURI: 'mongodb://127.0.0.1:27017/genshin_info'
+}; 
